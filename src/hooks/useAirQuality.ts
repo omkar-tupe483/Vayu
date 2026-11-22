@@ -36,3 +36,4 @@ export function useAirQuality(initialCity: string = 'Delhi') {
     refresh,
   };
 }
+

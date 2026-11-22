@@ -81,3 +81,4 @@ export const AQICard: React.FC<AQICardProps> = ({ data, loading, onRefresh }) =>
     </div>
   );
 };
+

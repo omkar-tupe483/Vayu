@@ -53,3 +53,4 @@ export function getAQIStatus(aqi: number): {
     recommendation: 'Health warnings of emergency conditions. Stay indoors and use continuous high-efficiency air purification.',
   };
 }
+

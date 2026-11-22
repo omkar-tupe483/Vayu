@@ -14,3 +14,4 @@ export interface AirQualityData {
   recommendation: string;
   lastUpdated: string;
 }
+
