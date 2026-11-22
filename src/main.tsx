@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LanguageProvider } from './i18n';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { ToastProvider } from './components/ui/Toast';
 import App from './App';
 import './index.css';
 
@@ -24,12 +26,15 @@ if (!rootElement) {
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <LanguageProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </LanguageProvider>
+      <ThemeProvider>
+        <LanguageProvider>
+          <ToastProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </ToastProvider>
+        </LanguageProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );
-

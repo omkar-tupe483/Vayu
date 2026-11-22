@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '../i18n';
-import { GeoCityItem } from '../schemas/geocodingSchema';
+import { useTheme } from '../contexts/ThemeContext';
 import { openMeteoService } from '../services/openMeteo';
-import { CitySearch } from '../components/dashboard/CitySearch';
-import { AQIOverviewCard } from '../components/dashboard/AQIOverviewCard';
-import { PollutantGrid } from '../components/dashboard/PollutantGrid';
-import { AQIMap } from '../components/map/AQIMap';
-import { Wind, AlertTriangle, RefreshCw, Loader2, WifiOff } from 'lucide-react';
+import { GeoCityItem } from '../schemas/geocodingSchema';
+import { getAqiCategory, AQI_CATEGORIES } from '../constants/aqi';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/Card';
+import { Button } from '../components/ui/Button';
+import { Skeleton } from '../components/ui/Skeleton';
+import { ErrorState } from '../components/ui/ErrorState';
+import { Search, MapPin, RefreshCw, Activity, Wind, Layers } from 'lucide-react';
 
 const DEFAULT_CITY: GeoCityItem = {
   id: 1273294,
@@ -20,115 +22,163 @@ const DEFAULT_CITY: GeoCityItem = {
 
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
-  const [selectedCity, setSelectedCity] = useState<GeoCityItem>(DEFAULT_CITY);
+  const { isDark } = useTheme();
+  const [selectedCity] = useState<GeoCityItem>(DEFAULT_CITY);
 
-  // TanStack Query for Air Quality Data
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    refetch,
-    isFetching,
-  } = useQuery({
+  const { data, isLoading, isError, error, refetch, isFetching } = useQuery({
     queryKey: ['airQuality', selectedCity.latitude, selectedCity.longitude],
     queryFn: () => openMeteoService.fetchAirQuality(selectedCity),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: 2,
+    staleTime: 5 * 60 * 1000,
   });
 
-  const isOffline = typeof navigator !== 'undefined' && !navigator.onLine;
+  const category = data ? getAqiCategory(data.us_aqi) : null;
+  const aqiStyle = category ? (isDark ? category.dark : category.light) : null;
 
   return (
     <div className="space-y-8">
-      {/* Offline Alert if detected */}
-      {isOffline && (
-        <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center justify-center gap-2">
-          <WifiOff className="w-4 h-4 shrink-0" aria-hidden="true" />
-          <span>{t('state.offlineNotice')}</span>
-        </div>
-      )}
-
-      {/* Hero & City Search Section */}
-      <section className="text-center space-y-4 max-w-3xl mx-auto" aria-labelledby="hero-title">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 text-teal-300 border border-teal-500/20 text-xs font-semibold">
-          <Wind className="w-3.5 h-3.5" aria-hidden="true" />
-          <span>{t('brand.name')} • {t('brand.subtitle')}</span>
+      {/* Dashboard Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-vayu-border-subtle">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black text-vayu-text flex items-center gap-2">
+            <Activity className="w-6 h-6 text-vayu-primary" aria-hidden="true" />
+            <span>{t('nav.dashboard') || 'Dashboard'}</span>
+          </h1>
+          <p className="text-xs sm:text-sm text-vayu-text-secondary">
+            {t('dashboard.subtitle') || 'Live urban air quality monitoring with Open-Meteo modelled estimates.'}
+          </p>
         </div>
 
-        <h1 id="hero-title" className="text-3xl md:text-5xl font-black tracking-tight text-white">
-          {t('brand.tagline')}
-        </h1>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => refetch()}
+          isLoading={isFetching}
+          leftIcon={<RefreshCw className="w-4 h-4" aria-hidden="true" />}
+        >
+          {t('aqi.refresh')}
+        </Button>
+      </div>
 
-        <p className="text-slate-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
-          {t('about.description')}
-        </p>
-
-        {/* City Search Bar */}
-        <div className="pt-2">
-          <CitySearch
-            selectedCity={selectedCity}
-            onSelectCity={setSelectedCity}
-            isLoading={isLoading || isFetching}
-          />
+      {/* Main Status Display */}
+      {isLoading ? (
+        <div className="space-y-4">
+          <Skeleton className="h-64 w-full" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-32 w-full" />
+          </div>
         </div>
-      </section>
+      ) : isError ? (
+        <ErrorState
+          title={t('state.errorTitle')}
+          message={error instanceof Error ? error.message : t('search.error')}
+          onRetry={() => refetch()}
+          retryLabel={t('state.retry')}
+        />
+      ) : data && category && aqiStyle ? (
+        <div className="space-y-6">
+          {/* Primary AQI Card */}
+          <div
+            style={{
+              backgroundColor: aqiStyle.bg,
+              borderColor: aqiStyle.border,
+            }}
+            className="rounded-3xl border p-6 sm:p-8 shadow-xl transition-all"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-5 h-5 shrink-0" style={{ color: aqiStyle.text }} aria-hidden="true" />
+                <span className="text-lg sm:text-xl font-bold" style={{ color: aqiStyle.text }}>
+                  {data.city}, {data.country}
+                </span>
+              </div>
+              <span
+                style={{
+                  color: aqiStyle.text,
+                  borderColor: aqiStyle.border,
+                }}
+                className="text-xs font-bold px-3 py-1 rounded-full border bg-white/40 dark:bg-black/20"
+              >
+                {t(category.translationKey)}
+              </span>
+            </div>
 
-      {/* Live Data Display, Loading, or Error */}
-      <section aria-label={t('aqi.title')} className="space-y-8">
-        {isLoading && !data ? (
-          <div className="space-y-6 animate-pulse" role="status" aria-live="polite">
-            <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-8 h-72 flex items-center justify-center">
-              <div className="flex items-center gap-2 text-teal-400 text-sm">
-                <Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" />
-                <span>{t('state.loading')}</span>
+            <div className="grid sm:grid-cols-2 gap-6 items-center">
+              <div>
+                <span className="text-xs uppercase tracking-wider font-semibold opacity-80" style={{ color: aqiStyle.text }}>
+                  {t('aqi.title')}
+                </span>
+                <div className="text-6xl sm:text-7xl font-black mt-1" style={{ color: aqiStyle.text }}>
+                  {data.us_aqi}
+                </div>
+                <p className="text-xs sm:text-sm mt-3 font-medium leading-relaxed" style={{ color: aqiStyle.text }}>
+                  {t(category.adviceTranslationKey)}
+                </p>
+              </div>
+
+              <div className="bg-white/60 dark:bg-black/30 rounded-2xl p-4 border" style={{ borderColor: aqiStyle.border }}>
+                <div className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: aqiStyle.text }}>
+                  {t('aqi.liveSnapshot')}
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-center">
+                  <div className="p-2.5 rounded-xl bg-white/70 dark:bg-black/20 border" style={{ borderColor: aqiStyle.border }}>
+                    <div className="text-[10px] opacity-75" style={{ color: aqiStyle.text }}>PM2.5</div>
+                    <div className="text-lg font-bold" style={{ color: aqiStyle.text }}>{data.pollutants.pm2_5}</div>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-white/70 dark:bg-black/20 border" style={{ borderColor: aqiStyle.border }}>
+                    <div className="text-[10px] opacity-75" style={{ color: aqiStyle.text }}>PM10</div>
+                    <div className="text-lg font-bold" style={{ color: aqiStyle.text }}>{data.pollutants.pm10}</div>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-white/70 dark:bg-black/20 border" style={{ borderColor: aqiStyle.border }}>
+                    <div className="text-[10px] opacity-75" style={{ color: aqiStyle.text }}>NO₂</div>
+                    <div className="text-lg font-bold" style={{ color: aqiStyle.text }}>{data.pollutants.nitrogen_dioxide}</div>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-white/70 dark:bg-black/20 border" style={{ borderColor: aqiStyle.border }}>
+                    <div className="text-[10px] opacity-75" style={{ color: aqiStyle.text }}>Ozone</div>
+                    <div className="text-lg font-bold" style={{ color: aqiStyle.text }}>{data.pollutants.ozone}</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 h-44" />
-              ))}
-            </div>
           </div>
-        ) : isError && !data ? (
-          <div className="bg-rose-950/30 border border-rose-900/60 rounded-3xl p-8 text-center space-y-4 max-w-xl mx-auto shadow-2xl" role="alert">
-            <div className="w-12 h-12 rounded-2xl bg-rose-900/50 border border-rose-800/60 text-rose-300 flex items-center justify-center mx-auto">
-              <AlertTriangle className="w-6 h-6" aria-hidden="true" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-white">{t('state.errorTitle')}</h3>
-              <p className="text-xs md:text-sm text-rose-200/80 mt-1.5">
-                {error instanceof Error ? error.message : t('search.error')}
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => refetch()}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs transition-colors shadow-lg shadow-rose-900/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
-              <RefreshCw className="w-4 h-4" aria-hidden="true" />
-              <span>{t('state.retry')}</span>
-            </button>
-          </div>
-        ) : data ? (
-          <div className="space-y-8">
-            <AQIOverviewCard
-              data={data}
-              isLoading={isFetching}
-              onRefresh={() => refetch()}
-            />
 
-            <PollutantGrid data={data} />
-
-            <AQIMap data={data} />
-          </div>
-        ) : (
-          <div className="text-center p-8 text-slate-400 text-sm">
-            {t('state.empty')}
-          </div>
-        )}
-      </section>
+          {/* AQI Scale Reference in Current Theme */}
+          <Card variant="tinted">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Layers className="w-5 h-5 text-vayu-primary" aria-hidden="true" />
+                <span>{t('landing.aqiTiersTitle') || 'AQI Scale Reference'}</span>
+              </CardTitle>
+              <CardDescription>
+                {t('landing.aqiTiersSubtitle') || 'Color-coded health tiers.'}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap items-center gap-2">
+                {AQI_CATEGORIES.map((cat) => {
+                  const style = isDark ? cat.dark : cat.light;
+                  return (
+                    <span
+                      key={cat.level}
+                      style={{
+                        backgroundColor: style.bg,
+                        borderColor: style.border,
+                        color: style.text,
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-bold"
+                    >
+                      <span style={{ backgroundColor: style.dot }} className="w-2 h-2 rounded-full" aria-hidden="true" />
+                      <span>{t(cat.translationKey)}</span>
+                    </span>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      ) : null}
     </div>
   );
 };
-

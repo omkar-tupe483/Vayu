@@ -1,30 +1,22 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Header } from './components/common/Header';
-import { Footer } from './components/common/Footer';
+import { AppShell } from './components/layout/AppShell';
+import { LandingPage } from './pages/LandingPage';
 import { DashboardPage } from './pages/DashboardPage';
-import { HealthGuidancePage } from './pages/HealthGuidancePage';
-import { AboutPage } from './pages/AboutPage';
+import { SettingsPage } from './pages/SettingsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export const App: React.FC = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      <Header />
-
-      <main id="main-content" className="flex-1 max-w-6xl w-full mx-auto px-4 py-8">
-        <Routes>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/health" element={<HealthGuidancePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </main>
-
-      <Footer />
-    </div>
+    <AppShell>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/app" element={<DashboardPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </AppShell>
   );
 };
 
 export default App;
-
