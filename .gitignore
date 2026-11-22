@@ -34,3 +34,6 @@ dist-ssr
 
 # TypeScript build cache
 *.tsbuildinfo
+
+# Local QA screenshots
+*.png
