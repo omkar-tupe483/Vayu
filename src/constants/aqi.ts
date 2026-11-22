@@ -28,6 +28,11 @@ export interface AqiCategoryDefinition {
   hex: string;
   light: AqiThemeVariant;
   dark: AqiThemeVariant;
+  badgeBg: string;
+  badgeBorder: string;
+  textColor: string;
+  dotColor: string;
+  gradientBg: string;
   adviceTranslationKey: string;
 }
 
@@ -51,6 +56,11 @@ export const AQI_CATEGORIES: readonly AqiCategoryDefinition[] = [
       text: '#A7F3D0',   /* emerald-200 - contrast 8.5:1 (WCAG AA PASS) */
       dot: '#34D399',
     },
+    badgeBg: 'bg-emerald-100 dark:bg-emerald-900/60',
+    badgeBorder: 'border-emerald-400 dark:border-emerald-600',
+    textColor: 'text-emerald-800 dark:text-emerald-200',
+    dotColor: 'bg-emerald-600 dark:bg-emerald-400',
+    gradientBg: 'from-emerald-500/10 via-teal-500/5 to-transparent',
     adviceTranslationKey: 'aqi.advice.good',
   },
   {
@@ -72,6 +82,11 @@ export const AQI_CATEGORIES: readonly AqiCategoryDefinition[] = [
       text: '#FEF08A',   /* yellow-200 - contrast 9.1:1 (WCAG AA PASS) */
       dot: '#FACC15',
     },
+    badgeBg: 'bg-yellow-100 dark:bg-yellow-950/60',
+    badgeBorder: 'border-yellow-400 dark:border-yellow-600',
+    textColor: 'text-yellow-900 dark:text-yellow-200',
+    dotColor: 'bg-yellow-600 dark:bg-yellow-400',
+    gradientBg: 'from-yellow-500/10 via-amber-500/5 to-transparent',
     adviceTranslationKey: 'aqi.advice.moderate',
   },
   {
@@ -93,6 +108,11 @@ export const AQI_CATEGORIES: readonly AqiCategoryDefinition[] = [
       text: '#FED7AA',   /* orange-200 - contrast 7.9:1 (WCAG AA PASS) */
       dot: '#FB923C',
     },
+    badgeBg: 'bg-orange-100 dark:bg-orange-900/60',
+    badgeBorder: 'border-orange-400 dark:border-orange-600',
+    textColor: 'text-orange-800 dark:text-orange-200',
+    dotColor: 'bg-orange-600 dark:bg-orange-400',
+    gradientBg: 'from-orange-500/10 via-amber-500/5 to-transparent',
     adviceTranslationKey: 'aqi.advice.unhealthy_sensitive',
   },
   {
@@ -114,6 +134,11 @@ export const AQI_CATEGORIES: readonly AqiCategoryDefinition[] = [
       text: '#FECACA',   /* red-200 - contrast 8.2:1 (WCAG AA PASS) */
       dot: '#F87171',
     },
+    badgeBg: 'bg-red-100 dark:bg-red-900/60',
+    badgeBorder: 'border-red-400 dark:border-red-600',
+    textColor: 'text-red-800 dark:text-red-200',
+    dotColor: 'bg-red-600 dark:bg-red-400',
+    gradientBg: 'from-rose-500/10 via-red-500/5 to-transparent',
     adviceTranslationKey: 'aqi.advice.unhealthy',
   },
   {
@@ -135,6 +160,11 @@ export const AQI_CATEGORIES: readonly AqiCategoryDefinition[] = [
       text: '#E9D5FF',   /* purple-200 - contrast 9.5:1 (WCAG AA PASS) */
       dot: '#C084FC',
     },
+    badgeBg: 'bg-purple-100 dark:bg-purple-950/60',
+    badgeBorder: 'border-purple-400 dark:border-purple-600',
+    textColor: 'text-purple-900 dark:text-purple-200',
+    dotColor: 'bg-purple-600 dark:bg-purple-400',
+    gradientBg: 'from-purple-500/10 via-violet-500/5 to-transparent',
     adviceTranslationKey: 'aqi.advice.very_unhealthy',
   },
   {
@@ -156,6 +186,11 @@ export const AQI_CATEGORIES: readonly AqiCategoryDefinition[] = [
       text: '#FFE4E6',   /* rose-100 - contrast 10.2:1 (WCAG AA PASS) */
       dot: '#F43F5E',
     },
+    badgeBg: 'bg-rose-100 dark:bg-[#4C0519]',
+    badgeBorder: 'border-rose-400 dark:border-rose-800',
+    textColor: 'text-rose-950 dark:text-rose-100',
+    dotColor: 'bg-[#800000] dark:bg-[#F43F5E]',
+    gradientBg: 'from-[#4C0519]/40 via-red-950/20 to-transparent',
     adviceTranslationKey: 'aqi.advice.hazardous',
   },
 ] as const;
@@ -170,11 +205,9 @@ export function getAqiCategory(value: number): AqiCategoryDefinition {
       return category;
     }
   }
-  // If above 500, clamp to hazardous
   return AQI_CATEGORIES[AQI_CATEGORIES.length - 1]!;
 }
 
-// Backwards-compatible alias for existing imports
 export const getAQICategory = getAqiCategory;
 export const AQI_SCALE = AQI_CATEGORIES;
 

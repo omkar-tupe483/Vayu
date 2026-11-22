@@ -1,21 +1,7 @@
-import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import React, { useState, ReactNode, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CheckCircle2, AlertTriangle, AlertCircle, Info, X } from 'lucide-react';
-
-export type ToastType = 'success' | 'warning' | 'error' | 'info';
-
-export interface ToastItem {
-  id: string;
-  title: string;
-  message?: string;
-  type: ToastType;
-}
-
-interface ToastContextType {
-  toast: (options: { title: string; message?: string; type?: ToastType }) => void;
-}
-
-const ToastContext = createContext<ToastContextType | undefined>(undefined);
+import { ToastContext, ToastItem, ToastType } from './toastContext';
 
 const iconMap = {
   success: CheckCircle2,
@@ -94,8 +80,3 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   );
 };
 
-export function useToast(): ToastContextType {
-  const context = useContext(ToastContext);
-  if (!context) throw new Error('useToast must be used within ToastProvider');
-  return context;
-}

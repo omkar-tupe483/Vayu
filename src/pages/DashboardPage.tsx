@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '../i18n';
 import { useTheme } from '../contexts/ThemeContext';
@@ -9,7 +9,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../co
 import { Button } from '../components/ui/Button';
 import { Skeleton } from '../components/ui/Skeleton';
 import { ErrorState } from '../components/ui/ErrorState';
-import { Search, MapPin, RefreshCw, Activity, Wind, Layers } from 'lucide-react';
+import { MapPin, RefreshCw, Activity, Layers } from 'lucide-react';
 
 const DEFAULT_CITY: GeoCityItem = {
   id: 1273294,

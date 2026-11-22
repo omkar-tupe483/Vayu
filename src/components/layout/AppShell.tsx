@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Logo } from '../ui/Logo';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import { LanguageSelector } from './LanguageSelector';
 import { useTheme } from '../../contexts/ThemeContext';
-import { useTranslation } from '../../i18n';
-import { Language } from '../../i18n/types';
+import { useTranslation } from '../../contexts/LanguageContext';
 import { ShieldCheck, Info } from 'lucide-react';
 
 export interface AppShellProps {
@@ -13,7 +13,7 @@ export interface AppShellProps {
 
 export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const { isDark, toggleTheme } = useTheme();
-  const { t, language, setLanguage, languages } = useTranslation();
+  const { t } = useTranslation();
   const location = useLocation();
 
   const navLinks = [
@@ -66,24 +66,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
             </nav>
 
             <div className="flex items-center gap-1.5 sm:gap-2 pl-1 sm:pl-2 border-l border-vayu-border-subtle">
-              {/* Language Selector */}
-              <label htmlFor="shell-language-select" className="sr-only">
-                {t('nav.selectLanguage')}
-              </label>
-              <select
-                id="shell-language-select"
-                value={language}
-                onChange={(e) => setLanguage(e.target.value as Language)}
-                className="bg-vayu-surface border border-vayu-border text-vayu-text text-xs font-bold rounded-xl px-2 py-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-vayu-focus-ring cursor-pointer shadow-sm"
-              >
-                {languages.map((lang) => (
-                  <option key={lang.code} value={lang.code} className="bg-vayu-surface text-vayu-text">
-                    {lang.nativeLabel}
-                  </option>
-                ))}
-              </select>
-
-              {/* Theme Toggle */}
+              <LanguageSelector />
               <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
             </div>
           </div>

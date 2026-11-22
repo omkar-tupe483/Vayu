@@ -128,3 +128,4 @@ export const SettingsPage: React.FC = () => {
     </div>
   );
 };
+

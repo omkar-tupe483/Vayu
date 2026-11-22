@@ -1,0 +1,128 @@
+{
+  "brand": {
+    "name": "Vayu",
+    "tagline": "Know your air. Breathe smarter.",
+    "subtitle": "Urban Air Quality Assistant"
+  },
+  "nav": {
+    "skipToContent": "Skip to main content",
+    "home": "Landing",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "language": "Language",
+    "selectLanguage": "Select interface language"
+  },
+  "landing": {
+    "openDashboard": "Explore Live AQI Dashboard",
+    "aqiTiersTitle": "US AQI Health Categories & Color Palette",
+    "aqiTiersSubtitle": "Strictly single-source-of-truth palette with WCAG AA compliant contrast in both light and dark themes."
+  },
+  "dashboard": {
+    "subtitle": "Live urban air quality monitoring with Open-Meteo modelled estimates."
+  },
+  "settings": {
+    "subtitle": "Customize your language, appearance, and accessibility preferences.",
+    "themeTitle": "Appearance Theme",
+    "themeDescription": "Choose Light, Dark, or automatically match your system preference.",
+    "languageDescription": "Select interface language (English, हिंदी, मराठी).",
+    "accessibilityTitle": "Accessibility & Design Tokens",
+    "accessibilityDescription": "WCAG AA verified contrast ratios and visible focus indicators."
+  },
+  "search": {
+    "placeholder": "Search any city worldwide (e.g. Delhi, Mumbai, London)...",
+    "quickPicks": "Quick picks:",
+    "searching": "Searching Open-Meteo geocoding...",
+    "clear": "Clear search",
+    "noResults": "No cities found for",
+    "error": "Unable to search cities. Please check connection."
+  },
+  "aqi": {
+    "title": "Air Quality Index",
+    "scale": "US AQI Scale",
+    "measuredAt": "Estimated for",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "liveSnapshot": "Atmospheric Snapshot",
+    "levels": {
+      "good": "Good (Green)",
+      "moderate": "Moderate (Yellow)",
+      "unhealthy_sensitive": "Unhealthy for Sensitive Groups (Orange)",
+      "unhealthy": "Unhealthy (Red)",
+      "very_unhealthy": "Very Unhealthy (Purple)",
+      "hazardous": "Hazardous (Maroon)"
+    },
+    "advice": {
+      "good": "Air quality is ideal. Enjoy outdoor recreation and ventilate indoor spaces safely.",
+      "moderate": "Air quality is acceptable. Unusually sensitive individuals should consider limiting prolonged outdoor exertion.",
+      "unhealthy_sensitive": "Members of sensitive groups (asthma, heart disease, children, elderly) should wear an N95 mask and limit outdoor exercise.",
+      "unhealthy": "Everyone may begin experiencing health effects. Avoid prolonged outdoor activity, keep windows shut, and run air purifiers.",
+      "very_unhealthy": "Health alert: serious risk of harm for all citizens. Stay indoors, seal room drafts, and operate continuous HEPA filtration.",
+      "hazardous": "Health emergency: entire population is severely affected. Remain strictly indoors and avoid any physical exertion outdoors."
+    }
+  },
+  "pollutants": {
+    "title": "Detailed Pollutant Breakdown",
+    "subtitle": "Open-Meteo atmospheric dispersion model",
+    "pm2_5": {
+      "name": "PM2.5",
+      "fullName": "Fine Particulate Matter",
+      "description": "Inhalable particles ≤ 2.5 µm that penetrate deep into the lungs and enter the bloodstream."
+    },
+    "pm10": {
+      "name": "PM10",
+      "fullName": "Inhalable Coarse Particles",
+      "description": "Particles ≤ 10 µm including road dust, pollen, mold, and construction particulates."
+    },
+    "nitrogen_dioxide": {
+      "name": "NO₂",
+      "fullName": "Nitrogen Dioxide",
+      "description": "Emitted mainly from fossil fuel combustion, vehicular traffic, and industrial facilities."
+    },
+    "ozone": {
+      "name": "Ozone (O₃)",
+      "fullName": "Ground-level Ozone",
+      "description": "Secondary pollutant created by photochemical reactions between sunlight and VOCs/NOx."
+    }
+  },
+  "status": {
+    "good": "Good",
+    "moderate": "Moderate",
+    "poor": "Poor",
+    "unhealthy": "Unhealthy",
+    "hazardous": "Hazardous"
+  },
+  "map": {
+    "title": "Interactive Air Quality Map",
+    "subtitle": "Centered on selected coordinates with OpenStreetMap tiles",
+    "recenter": "Center on City",
+    "clickHint": "Click marker to view AQI & main pollutants",
+    "legend": "AQI Scale Legend"
+  },
+  "state": {
+    "loading": "Fetching live air quality data from Open-Meteo...",
+    "errorTitle": "Unable to Fetch Air Quality Data",
+    "retry": "Try Again",
+    "offlineNotice": "You are currently offline. Showing last cached estimates.",
+    "empty": "Select a city above to inspect air quality."
+  },
+  "disclaimer": {
+    "modelled": "Honest Disclosure: Open-Meteo values are modelled atmospheric estimates, not ground-sensor readings.",
+    "health": "Health Guidance Notice: General wellness information only, never a medical diagnosis or treatment plan."
+  },
+  "footer": {
+    "copyright": "Know your air. Breathe smarter.",
+    "poweredBy": "Powered by Open-Meteo & OpenStreetMap • Free & Open Data"
+  },
+  "about": {
+    "title": "About Vayu",
+    "description": "Vayu is a lightweight, frontend-only air quality assistant designed for urban citizens. Built for transparency, accessibility, and zero-barrier access with no logins or API keys required.",
+    "featuresTitle": "Core Capabilities",
+    "feature1Title": "Modelled Estimates",
+    "feature1Desc": "Transparently fetches data from the Open-Meteo Atmospheric Chemistry & Geocoding models.",
+    "feature2Title": "Trilingual Accessibility",
+    "feature2Desc": "Fully localized in English, Hindi, and Marathi with high contrast and keyboard navigation.",
+    "feature3Title": "Zero Tracking & No Keys",
+    "feature3Desc": "Everything runs directly in your browser. No cookies, no logins, no cloud databases."
+  }
+}
+
