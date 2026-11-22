@@ -101,3 +101,4 @@ export const mrTranslations: TranslationDictionary = {
   'about.feature3Title': 'शून्य ट्रॅकिंग',
   'about.feature3Desc': 'सर्व काही थेट तुमच्या ब्राउझरमध्ये चालते.',
 };
+

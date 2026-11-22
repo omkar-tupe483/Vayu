@@ -1,15 +1,9 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
-import { Language, SUPPORTED_LANGUAGES, LanguageOption } from './types';
+import React, { useState, useEffect, ReactNode, useMemo } from 'react';
+import { Language, SUPPORTED_LANGUAGES } from './types';
+import { LanguageContext } from './context';
 import { enTranslations } from './translations/en';
 import { hiTranslations } from './translations/hi';
 import { mrTranslations } from './translations/mr';
-
-interface LanguageContextType {
-  language: Language;
-  setLanguage: (lang: Language) => void;
-  languages: readonly LanguageOption[];
-  t: (key: string, params?: Record<string, string | number>) => string;
-}
 
 const STORAGE_KEY = 'vayu_lang';
 
@@ -18,8 +12,6 @@ const translationsMap: Record<Language, Record<string, string>> = {
   hi: hiTranslations,
   mr: mrTranslations,
 };
-
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
@@ -79,10 +71,3 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   );
 };
 
-export function useTranslation(): LanguageContextType {
-  const context = useContext(LanguageContext);
-  if (!context) {
-    throw new Error('useTranslation must be used within a LanguageProvider');
-  }
-  return context;
-}

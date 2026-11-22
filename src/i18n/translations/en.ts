@@ -101,3 +101,4 @@ export const enTranslations: TranslationDictionary = {
   'about.feature3Title': 'Zero Tracking & No Keys',
   'about.feature3Desc': 'Everything runs directly in your browser. No cookies, no logins, no cloud databases.',
 };
+

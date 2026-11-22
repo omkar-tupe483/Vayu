@@ -101,3 +101,4 @@ export const hiTranslations: TranslationDictionary = {
   'about.feature3Title': 'शून्य ट्रैकिंग',
   'about.feature3Desc': 'सब कुछ आपके ब्राउज़र में चलता है। कोई ट्रैकिंग या लॉगिन नहीं।',
 };
+

@@ -13,3 +13,4 @@ export const SUPPORTED_LANGUAGES: readonly LanguageOption[] = [
 ] as const;
 
 export type TranslationDictionary = Record<string, string>;
+

@@ -24,3 +24,4 @@ export const openMeteoGeocodingSchema = z.object({
 
 export type GeoCityItem = z.infer<typeof geoCityItemSchema>;
 export type OpenMeteoGeocodingResponse = z.infer<typeof openMeteoGeocodingSchema>;
+

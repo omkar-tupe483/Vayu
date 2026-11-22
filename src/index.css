@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #020617; /* slate-950 */
+  color: #f8fafc; /* slate-50 */
+}
+
+/* Accessibility: Visible Focus Rings */
+*:focus-visible {
+  outline: 2px solid #2dd4bf; /* teal-400 */
+  outline-offset: 2px;
+}
+
+/* Respect Prefers-Reduced-Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Leaflet Container & Popup Styling */
+.leaflet-container {
+  font-family: inherit;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.vayu-leaflet-popup .leaflet-popup-content-wrapper {
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  padding: 0.35rem;
+  border: 1px solid #cbd5e1;
+}
+
+.vayu-leaflet-popup .leaflet-popup-tip {
+  background: #ffffff;
+}
+
+.vayu-leaflet-popup .leaflet-popup-content {
+  margin: 8px 12px;
+  line-height: 1.4;
+}
+
+.vayu-leaflet-popup a.leaflet-popup-close-button {
+  top: 8px;
+  right: 8px;
+  color: #64748b;
+  font-size: 16px;
+  padding: 2px;
+}
+
+.vayu-leaflet-popup a.leaflet-popup-close-button:hover {
+  color: #0f172a;
+}
+
