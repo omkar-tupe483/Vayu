@@ -3,24 +3,79 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  /* Font Stack with Noto Sans Devanagari for authentic Hindi & Marathi rendering */
+  font-family: 'Inter', 'Noto Sans Devanagari', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: dark;
+
+  /* =========================================================================
+     LIGHT THEME TOKENS
+     - Primary: Powder Blue #B0E0E6
+     - Secondary: Soft Lavender #E6E6FA
+     - Accent: Warm Sunset Peach #FFCBA4
+     - Text: dark navy #1E2A44 (secondary text #4A5578)
+     - Page background: very light tint of Soft Lavender (#F7F7FD)
+     - Cards: white (#FFFFFF) or light tint of Powder Blue (#F0F8FA)
+     - Borders: darker tint of Powder Blue (#8AC8D0)
+     ========================================================================= */
+  --vayu-bg: #F7F7FD;
+  --vayu-surface: #FFFFFF;
+  --vayu-surface-elevated: #FFFFFF;
+  --vayu-surface-tint: #F0F8FA;
+  --vayu-primary: #B0E0E6;
+  --vayu-primary-hover: #98D3DC;
+  --vayu-secondary: #E6E6FA;
+  --vayu-secondary-hover: #D8D8F6;
+  --vayu-accent: #FFCBA4;
+  --vayu-accent-hover: #F8BA8E;
+  --vayu-accent-text: #1E2A44;     /* Navy text on Peach button -> 6.8:1 contrast (WCAG AA PASS) */
+  --vayu-accent-link: #BA4E12;     /* Darkened Peach tone for text links -> 5.5:1 contrast (WCAG AA PASS) */
+  --vayu-text: #1E2A44;            /* Dark Navy text -> 12.5:1 contrast (WCAG AAA PASS) */
+  --vayu-text-secondary: #4A5578;  /* Secondary text -> 6.2:1 contrast (WCAG AA PASS) */
+  --vayu-border: #8AC8D0;          /* Darker tint of Powder Blue */
+  --vayu-border-subtle: #D6EFF2;
+  --vayu-focus-ring: #1E2A44;      /* High-contrast focus ring */
+}
+
+.dark {
+  /* =========================================================================
+     DARK THEME TOKENS
+     - Page background: #0F172A, surface #1B2540, elevated surface #262F52
+     - Primary: #7FB8C9, secondary #9C95D0, accent #F4A982
+     - Text: #EEF0FA, secondary text #B7BCD6, border #2F3A63
+     ========================================================================= */
+  --vayu-bg: #0F172A;
+  --vayu-surface: #1B2540;
+  --vayu-surface-elevated: #262F52;
+  --vayu-surface-tint: #1E2A44;
+  --vayu-primary: #7FB8C9;
+  --vayu-primary-hover: #93C6D4;
+  --vayu-secondary: #9C95D0;
+  --vayu-secondary-hover: #ACA6DA;
+  --vayu-accent: #F4A982;
+  --vayu-accent-hover: #F7BA9A;
+  --vayu-accent-text: #0F172A;     /* Dark navy on Peach button -> 7.8:1 contrast (WCAG AA PASS) */
+  --vayu-accent-link: #F8B490;     /* High-contrast peach tone for dark links -> 6.5:1 contrast (WCAG AA PASS) */
+  --vayu-text: #EEF0FA;            /* Text -> 13.8:1 contrast (WCAG AAA PASS) */
+  --vayu-text-secondary: #B7BCD6;  /* Secondary text -> 7.5:1 contrast (WCAG AA PASS) */
+  --vayu-border: #2F3A63;          /* Dark theme border */
+  --vayu-border-subtle: #1F2847;
+  --vayu-focus-ring: #F4A982;      /* High-contrast focus ring */
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #020617; /* slate-950 */
-  color: #f8fafc; /* slate-50 */
+  background-color: var(--vayu-bg);
+  color: var(--vayu-text);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Accessibility: Visible Focus Rings */
+/* Accessibility: Visible Focus Rings on interactive elements */
 *:focus-visible {
-  outline: 2px solid #2dd4bf; /* teal-400 */
-  outline-offset: 2px;
+  outline: 2px solid var(--vayu-focus-ring) !important;
+  outline-offset: 2px !important;
 }
 
 /* Respect Prefers-Reduced-Motion */
@@ -44,16 +99,16 @@ body {
 }
 
 .vayu-leaflet-popup .leaflet-popup-content-wrapper {
-  background: #ffffff;
-  color: #0f172a;
+  background: var(--vayu-surface);
+  color: var(--vayu-text);
   border-radius: 1rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
   padding: 0.35rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--vayu-border);
 }
 
 .vayu-leaflet-popup .leaflet-popup-tip {
-  background: #ffffff;
+  background: var(--vayu-surface);
 }
 
 .vayu-leaflet-popup .leaflet-popup-content {
@@ -64,12 +119,7 @@ body {
 .vayu-leaflet-popup a.leaflet-popup-close-button {
   top: 8px;
   right: 8px;
-  color: #64748b;
+  color: var(--vayu-text-secondary);
   font-size: 16px;
   padding: 2px;
 }
-
-.vayu-leaflet-popup a.leaflet-popup-close-button:hover {
-  color: #0f172a;
-}
-
