@@ -13,9 +13,11 @@ import { CitySearch } from '../components/aqi/CitySearch';
 import { DEFAULT_CITY } from '../constants/cities';
 import { CurrentAqiCard } from '../components/aqi/CurrentAqiCard';
 import { PollutantGrid } from '../components/aqi/PollutantGrid';
+import { useAirQualityForecast } from '../hooks/useAirQualityForecast';
 import { RefreshCw, Activity, Layers, WifiOff } from 'lucide-react';
 
 const AirQualityMap = lazy(() => import('../components/map/AirQualityMap'));
+const ForecastChart = lazy(() => import('../components/forecast/ForecastChart'));
 
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
@@ -47,6 +49,8 @@ export const DashboardPage: React.FC = () => {
     staleTime: 5 * 60 * 1000,
     retry: 2,
   });
+
+  const { data: forecastData, isLoading: isForecastLoading } = useAirQualityForecast(selectedCity);
 
   return (
     <div className="space-y-8">
@@ -137,6 +141,15 @@ export const DashboardPage: React.FC = () => {
 
           {/* Detailed Pollutants Grid (PM2.5, PM10, NO2, Ozone) */}
           <PollutantGrid data={data} />
+
+          {/* 24-Hour Air Quality Forecast Chart */}
+          {isForecastLoading ? (
+            <Skeleton className="h-72 w-full rounded-3xl" />
+          ) : forecastData ? (
+            <Suspense fallback={<Skeleton className="h-72 w-full rounded-3xl" />}>
+              <ForecastChart forecast={forecastData} />
+            </Suspense>
+          ) : null}
 
           {/* AQI Scale Reference Tiers */}
           <Card variant="tinted">
