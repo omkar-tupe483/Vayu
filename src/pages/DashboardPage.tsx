@@ -1,52 +1,108 @@
 import React from 'react';
 import { useTranslation } from '../contexts/LanguageContext';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/Card';
-import { Activity, Sparkles, MapPin } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { useCity } from '../contexts/CityContext';
+import { useAirQuality } from '../hooks/useAirQuality';
+import {
+  CitySearch,
+  CurrentAQIHeroCard,
+  AQIScaleLegend,
+  PollutantGrid,
+  DataFreshnessIndicator,
+} from '../components/aqi';
+import { Skeleton } from '../components/ui/Skeleton';
+import { ErrorState } from '../components/ui/ErrorState';
+import { Activity } from 'lucide-react';
+import { useToast } from '../components/ui/toastContext';
 
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
+  const { currentCity } = useCity();
+  const { data, isLoading, isError, error, refetch, isFetching } = useAirQuality(currentCity);
+  const { addToast } = useToast();
+
+  const handleSetAlert = () => {
+    addToast({
+      title: 'Alert Configured',
+      message: `AQI monitoring enabled for ${currentCity.name}. You will be alerted when air quality drops.`,
+      type: 'info',
+    });
+  };
+
+  const handleViewHealthAdvice = () => {
+    const healthSection = document.getElementById('health-section');
+    if (healthSection) {
+      healthSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      addToast({
+        title: 'Health Advisor',
+        message: 'Personalized rule-based guidance is available in the Health Advisor tab.',
+        type: 'info',
+      });
+    }
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-vayu-border-subtle">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-vayu-text flex items-center gap-2">
-            <Activity className="w-6 h-6 text-vayu-primary" aria-hidden="true" />
-            <span>{t('dashboard.title')}</span>
-          </h1>
-          <p className="text-xs sm:text-sm text-vayu-text-secondary">
-            {t('dashboard.subtitle')}
-          </p>
+    <div className="space-y-7">
+      {/* Page Header */}
+      <div className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-vayu-border-subtle">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-black text-vayu-text flex items-center gap-2">
+              <Activity className="w-6 h-6 text-vayu-primary" aria-hidden="true" />
+              <span>{t('dashboard.title')}</span>
+            </h1>
+            <p className="text-xs sm:text-sm text-vayu-text-secondary">
+              {t('dashboard.subtitle')}
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-vayu-surface border border-vayu-border text-xs font-bold text-vayu-text">
-          <MapPin className="w-3.5 h-3.5 text-vayu-accent" aria-hidden="true" />
-          <span>Default: Pune, Maharashtra • India</span>
-        </div>
+        {/* Global City Search Combobox */}
+        <CitySearch />
       </div>
 
-      <Card variant="elevated">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-vayu-accent" aria-hidden="true" />
-            <span>Phase 1 Foundation Ready</span>
-          </CardTitle>
-          <CardDescription>
-            The clean, accessible UI shell, design tokens, Devanagari typography, and i18n are fully initialized. Live Open-Meteo city search & AQI data hooks will connect in Phase 2.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="p-4 rounded-2xl bg-vayu-surface-tint border border-vayu-border space-y-2">
-            <p className="text-xs sm:text-sm text-vayu-text font-medium">
-              Ready for Phase 2: Open-Meteo autocomplete geocoding, live US AQI hero card, pollutant breakdown grid, and freshness indicators.
-            </p>
-            <Button size="sm" variant="primary">
-              Scaffold Verified
-            </Button>
+      {/* Main Status Display: Loading, Error, or Live Data */}
+      {isLoading ? (
+        <div className="space-y-6">
+          <Skeleton className="h-72 w-full rounded-3xl" />
+          <Skeleton className="h-24 w-full rounded-3xl" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Skeleton className="h-36 w-full rounded-2xl" />
+            <Skeleton className="h-36 w-full rounded-2xl" />
+            <Skeleton className="h-36 w-full rounded-2xl" />
+            <Skeleton className="h-36 w-full rounded-2xl" />
+            <Skeleton className="h-36 w-full rounded-2xl" />
+            <Skeleton className="h-36 w-full rounded-2xl" />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      ) : isError ? (
+        <ErrorState
+          title={t('state.errorTitle')}
+          message={error instanceof Error ? error.message : 'Unable to connect to Open-Meteo'}
+          onRetry={() => refetch()}
+          retryLabel={t('state.retry')}
+        />
+      ) : data ? (
+        <div className="space-y-7">
+          {/* Freshness Timestamp */}
+          <DataFreshnessIndicator timestamp={data.time} isFetching={isFetching} />
+
+          {/* Hero Card */}
+          <CurrentAQIHeroCard
+            data={data}
+            onRefresh={() => refetch()}
+            isRefreshing={isFetching}
+            onViewHealthAdvice={handleViewHealthAdvice}
+            onSetAlert={handleSetAlert}
+          />
+
+          {/* Categorical Scale Legend */}
+          <AQIScaleLegend currentAqi={data.us_aqi} />
+
+          {/* Detailed Pollutants Breakdown */}
+          <PollutantGrid data={data} />
+        </div>
+      ) : null}
     </div>
   );
 };

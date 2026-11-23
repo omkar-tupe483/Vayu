@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from './contexts/ThemeProvider';
 import { LanguageProvider } from './contexts/LanguageProvider';
+import { CityProvider } from './contexts/CityContext';
 import { ToastProvider } from './components/ui/Toast';
 import { AppShell } from './components/layout/AppShell';
 import { LandingPage } from './pages/LandingPage';
@@ -25,21 +26,23 @@ export const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <LanguageProvider>
-          <ToastProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<AppShell />}>
-                  <Route index element={<LandingPage />} />
-                  <Route path="app" element={<DashboardPage />} />
-                  <Route path="settings" element={<SettingsPage />} />
-                  {/* Redirects for routes/health placeholders */}
-                  <Route path="routes" element={<Navigate to="/app" replace />} />
-                  <Route path="health" element={<Navigate to="/app" replace />} />
-                  <Route path="*" element={<NotFoundPage />} />
-                </Route>
-              </Routes>
-            </BrowserRouter>
-          </ToastProvider>
+          <CityProvider>
+            <ToastProvider>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<AppShell />}>
+                    <Route index element={<LandingPage />} />
+                    <Route path="app" element={<DashboardPage />} />
+                    <Route path="settings" element={<SettingsPage />} />
+                    {/* Redirects for routes/health placeholders */}
+                    <Route path="routes" element={<Navigate to="/app" replace />} />
+                    <Route path="health" element={<Navigate to="/app" replace />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                  </Route>
+                </Routes>
+              </BrowserRouter>
+            </ToastProvider>
+          </CityProvider>
         </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>
@@ -47,3 +50,4 @@ export const App: React.FC = () => {
 };
 
 export default App;
+
