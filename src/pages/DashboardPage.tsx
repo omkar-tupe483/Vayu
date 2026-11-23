@@ -18,6 +18,7 @@ import { RefreshCw, Activity, Layers, WifiOff } from 'lucide-react';
 
 const AirQualityMap = lazy(() => import('../components/map/AirQualityMap'));
 const ForecastChart = lazy(() => import('../components/forecast/ForecastChart'));
+import { ForecastTimeline } from '../components/forecast/ForecastTimeline';
 
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
@@ -142,13 +143,19 @@ export const DashboardPage: React.FC = () => {
           {/* Detailed Pollutants Grid (PM2.5, PM10, NO2, Ozone) */}
           <PollutantGrid data={data} />
 
-          {/* 24-Hour Air Quality Forecast Chart */}
+          {/* 24-Hour Air Quality Forecast Chart & Timeline */}
           {isForecastLoading ? (
-            <Skeleton className="h-72 w-full rounded-3xl" />
+            <div className="space-y-4">
+              <Skeleton className="h-72 w-full rounded-3xl" />
+              <Skeleton className="h-32 w-full rounded-3xl" />
+            </div>
           ) : forecastData ? (
-            <Suspense fallback={<Skeleton className="h-72 w-full rounded-3xl" />}>
-              <ForecastChart forecast={forecastData} />
-            </Suspense>
+            <div className="space-y-4">
+              <Suspense fallback={<Skeleton className="h-72 w-full rounded-3xl" />}>
+                <ForecastChart forecast={forecastData} />
+              </Suspense>
+              <ForecastTimeline forecast={forecastData} />
+            </div>
           ) : null}
 
           {/* AQI Scale Reference Tiers */}
