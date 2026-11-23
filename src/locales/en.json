@@ -60,6 +60,33 @@
       "hazardous": "Health emergency: entire population is severely affected. Remain strictly indoors and avoid any physical exertion outdoors."
     }
   },
+  "forecast": {
+    "title": "24-Hour Air Quality Forecast",
+    "subtitle": "Hourly Open-Meteo atmospheric projections in city timezone",
+    "now": "Now",
+    "lowest": "Cleanest Air",
+    "highest": "Peak Pollution",
+    "timeline": "Hourly Timeline (24h)",
+    "bestWindow": "Recommended Outdoor Window",
+    "noSafeWindow": "No safe window detected for this profile today",
+    "noSafeWindowDesc": "All upcoming hours exceed your health profile's recommended safety threshold. Keep windows shut and use indoor air purifiers.",
+    "profile": "Health Profile",
+    "threshold": "AQI Threshold",
+    "expectedAqi": "Expected Avg AQI",
+    "peakAqi": "Max Window AQI",
+    "hours": "hours",
+    "profiles": {
+      "general": "General Public (AQI ≤ 100)",
+      "runner": "Runners & Athletes (AQI ≤ 80)",
+      "child_elderly": "Children & Elderly (AQI ≤ 70)",
+      "asthma": "Asthma & Sensitive (AQI ≤ 50)"
+    },
+    "reason": {
+      "optimal": "Optimal continuous period for outdoor runs, commuting, and opening home windows safely.",
+      "acceptable": "Air quality is acceptable; sensitive individuals should monitor respiratory symptoms.",
+      "avoid": "Harmful particulate exposure expected. Remain indoors and seal drafty room windows."
+    }
+  },
   "pollutants": {
     "title": "Detailed Pollutant Breakdown",
     "subtitle": "Open-Meteo atmospheric dispersion model",
