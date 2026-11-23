@@ -13,10 +13,25 @@ export class WebLLMService implements AIService {
   isLoading = false;
   private engine: unknown = null;
   private fallbackService = new RuleBasedAIService();
-  private selectedModel = 'SmolLM2-135M-Instruct-q4f16_1-MLC';
+  private selectedModel = 'SmolLM2-135M-Instruct-q0f16-MLC';
+  private fallbackModel = 'SmolLM2-135M-Instruct-q0f32-MLC';
 
   static isWebGPUSupported(): boolean {
     return typeof navigator !== 'undefined' && 'gpu' in navigator;
+  }
+
+  static async getOptimalModel(): Promise<string> {
+    if (WebLLMService.isWebGPUSupported()) {
+      try {
+        const adapter = await navigator.gpu.requestAdapter();
+        if (adapter && adapter.features.has('shader-f16')) {
+          return 'SmolLM2-135M-Instruct-q0f16-MLC';
+        }
+      } catch {
+        // fallback
+      }
+    }
+    return 'SmolLM2-135M-Instruct-q0f32-MLC';
   }
 
   async initialize(onProgress?: (progress: WebLLMLoadProgress) => void): Promise<boolean> {
@@ -31,6 +46,9 @@ export class WebLLMService implements AIService {
     }
 
     this.isLoading = true;
+    const modelToTry = await WebLLMService.getOptimalModel();
+    this.selectedModel = modelToTry;
+
     try {
       // Dynamic import to keep main bundle tiny (< 4 MB constraint)
       const webllm = await import('@mlc-ai/web-llm');
@@ -44,9 +62,21 @@ export class WebLLMService implements AIService {
         }
       };
 
-      this.engine = await webllm.CreateMLCEngine(this.selectedModel, {
-        initProgressCallback,
-      });
+      try {
+        this.engine = await webllm.CreateMLCEngine(this.selectedModel, {
+          initProgressCallback,
+        });
+      } catch (errFirst) {
+        if (this.selectedModel !== this.fallbackModel) {
+          console.warn('Initial model load failed, retrying universal fallback model:', errFirst);
+          this.selectedModel = this.fallbackModel;
+          this.engine = await webllm.CreateMLCEngine(this.selectedModel, {
+            initProgressCallback,
+          });
+        } else {
+          throw errFirst;
+        }
+      }
 
       this.isAvailable = true;
       this.isLoading = false;
@@ -64,17 +94,17 @@ export class WebLLMService implements AIService {
     context: ChatContext,
     onProgress?: (partialText: string) => void
   ): Promise<string> {
-    if (!this.engine || !this.isAvailable) {
+    // For Hindi and Marathi, or when WebLLM is uninitialized, rule engine provides natural localized clinical responses
+    if (context.language !== 'en' || !this.engine || !this.isAvailable) {
       return this.fallbackService.generateResponse(prompt, context, onProgress);
     }
 
     try {
       const aqi = Math.round(context.currentAqi ?? context.airQualityData?.us_aqi ?? 50);
       const systemPrompt = `You are Vayu, a concise, friendly urban air quality assistant for ${context.city}.
-Current US AQI: ${aqi}.
-User profile: ${context.userProfile || 'general'}.
-Language: ${context.language}.
-Give concise, helpful, non-diagnostic guidance in 2-3 sentences. Never prescribe medication or give clinical medical diagnosis. If severe chest pain or breathing difficulty is described, tell them to call emergency services immediately.`;
+Current US AQI in ${context.city}: ${aqi}.
+User sensitivity profile: ${context.userProfile || 'general'}.
+Give concise, helpful, non-diagnostic guidance in 2-3 sentences. Never prescribe medication or give clinical medical diagnosis. If severe chest pain or breathing difficulty is described, tell them to call emergency services (108/112/911) immediately.`;
 
       interface MLCEngineInterface {
         chat: {

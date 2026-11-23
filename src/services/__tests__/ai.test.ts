@@ -110,11 +110,49 @@ describe('AI Services (Phase 6)', () => {
     });
   });
 
-  describe('Pollutant Explanation Intent', () => {
+  describe('Pollutant Explanation & AQI Concepts', () => {
     it('explains PM2.5 in detail', async () => {
       const res = await ruleEngine.generateResponse('What is PM2.5?', mockContext);
       expect(res).toContain('PM2.5');
       expect(res).toContain('2.5 micrometers');
+    });
+
+    it('explains the 0-500 AQI scale when asked "what is AQI?"', async () => {
+      const res = await ruleEngine.generateResponse('What is AQI?', mockContext);
+      expect(res).toContain('Air Quality Index');
+      expect(res).toContain('0 to 500');
+      expect(res).not.toContain('PM2.5 refers to fine inhalable');
+    });
+  });
+
+  describe('Greetings, Help & Sensitivity Intents', () => {
+    it('greets user and introduces capabilities for "hi"', async () => {
+      const res = await ruleEngine.generateResponse('hi', mockContext);
+      expect(res).toContain('Hello! I am Vayu');
+      expect(res).toContain('Outdoor running');
+    });
+
+    it('provides asthma-specific precautions', async () => {
+      const res = await ruleEngine.generateResponse('I have asthma, is it safe?', {
+        ...mockContext,
+        currentAqi: 120,
+      });
+      expect(res).toContain('Asthma');
+      expect(res).toContain('inhaler');
+    });
+
+    it('answers outdoor safety question directly', async () => {
+      const res = await ruleEngine.generateResponse('Can I go outside today?', mockContext);
+      expect(res).toContain('safe to go outdoors');
+    });
+
+    it('does not display raw localization keys in status response', async () => {
+      const res = await ruleEngine.generateResponse('How is the air in Pune today?', {
+        ...mockContext,
+        language: 'hi',
+      });
+      expect(res).not.toContain('advisor.summary');
+      expect(res).toContain('स्वास्थ्य सारांश');
     });
   });
 

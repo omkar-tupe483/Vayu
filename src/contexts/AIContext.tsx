@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react';
 import { ChatMessage, AIMode, ChatContext } from '../services/ai';
 import { RuleBasedAIService } from '../services/ruleBasedAI';
 import { useWebLLM, UseWebLLMReturn } from '../hooks/useWebLLM';
@@ -7,6 +7,7 @@ import { useCity } from './CityContext';
 import { useTranslation, Language } from './LanguageContext';
 import { useAirQuality } from '../hooks/useAirQuality';
 import { useAirQualityForecast } from '../hooks/useAirQualityForecast';
+import { UserProfileId } from '../utils/advisor';
 
 export interface AIContextValue {
   messages: ChatMessage[];
@@ -71,17 +72,45 @@ export const AIProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     },
   ]);
 
+  // Sync initial welcome message if language switches before user sends messages
+  useEffect(() => {
+    setMessages((prev) => {
+      if (prev.length === 1 && prev[0]?.role === 'assistant') {
+        return [
+          {
+            id: 'init-1',
+            role: 'assistant',
+            text: INITIAL_MESSAGES[language as Language] || INITIAL_MESSAGES.en,
+            timestamp: Date.now(),
+            source: 'rule_based',
+          },
+        ];
+      }
+      return prev;
+    });
+  }, [language]);
+
   const [isGenerating, setIsGenerating] = useState(false);
 
   const aiMode: AIMode = webLLM.isEnabled ? 'web_llm' : 'rule_based';
 
-  const chatContext: ChatContext = useMemo(() => ({
-    city: currentCity.name,
-    currentAqi: aqiData?.us_aqi,
-    airQualityData: aqiData,
-    forecastData: forecastData,
-    language: language,
-  }), [currentCity, aqiData, forecastData, language]);
+  const chatContext: ChatContext = useMemo(() => {
+    let savedProfile: UserProfileId = 'general';
+    try {
+      const stored = localStorage.getItem('vayu_profile');
+      if (stored) savedProfile = stored as UserProfileId;
+    } catch {
+      // ignore
+    }
+    return {
+      city: currentCity.name,
+      currentAqi: aqiData?.us_aqi,
+      airQualityData: aqiData,
+      forecastData: forecastData,
+      userProfile: savedProfile,
+      language: language,
+    };
+  }, [currentCity, aqiData, forecastData, language]);
 
   const sendMessage = useCallback(
     async (text: string) => {
