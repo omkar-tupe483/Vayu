@@ -9,6 +9,7 @@ import { ToastProvider } from './components/ui/Toast';
 import { AppShell } from './components/layout/AppShell';
 import { LandingPage } from './pages/LandingPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { RoutePlannerView } from './components/route/RoutePlannerView';
 import { SettingsPage } from './pages/SettingsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
@@ -37,7 +38,7 @@ export const App: React.FC = () => {
                       <Route path="app" element={<DashboardPage />} />
                       <Route path="settings" element={<SettingsPage />} />
                       {/* Redirects for routes/health placeholders */}
-                      <Route path="routes" element={<Navigate to="/app" replace />} />
+                      <Route path="routes" element={<RoutePlannerView />} />
                       <Route path="health" element={<Navigate to="/app" replace />} />
                       <Route path="*" element={<NotFoundPage />} />
                     </Route>

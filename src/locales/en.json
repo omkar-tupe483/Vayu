@@ -267,6 +267,15 @@
     "placeholder": "Ask about air quality, running, or masks...",
     "send": "Send message",
     "clear": "Clear conversation"
+  },
+  "route": {
+    "title": "Cleanest Route Navigator",
+    "subtitle": "Navigate through city transit corridors with the lowest atmospheric pollution exposure",
+    "plannerTitle": "Route Planner & Exposure Estimator",
+    "startLocation": "Starting Point (Origin)",
+    "endLocation": "Destination",
+    "findCleanest": "Find Cleanest Route",
+    "comparisonTitle": "Route Alternatives & Exposure Scoring"
   }
 }
 
