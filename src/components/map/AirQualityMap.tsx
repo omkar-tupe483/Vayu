@@ -7,8 +7,8 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useTranslation } from '../../i18n';
 import { fixLeafletDefaultIcon, createAqiDivIcon } from './mapUtils';
 import { MapLegend } from './MapLegend';
-import { CurrentLocationButton } from './CurrentLocationButton';
-import { Clock } from 'lucide-react';
+import { MapControls } from './MapControls';
+import { Map as MapIcon, Clock, Info } from 'lucide-react';
 
 // Fix default Leaflet marker icons
 fixLeafletDefaultIcon();
@@ -60,6 +60,29 @@ export const AirQualityMap: React.FC<AirQualityMapProps> = ({
     <div
       className={`relative w-full rounded-3xl overflow-hidden border border-vayu-border bg-vayu-surface-elevated shadow-xl ${className}`}
     >
+      {/* Map Header */}
+      <div className="p-4 sm:p-5 border-b border-vayu-border-subtle flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-2xl bg-vayu-surface-tint border border-vayu-border flex items-center justify-center text-vayu-primary">
+            <MapIcon className="w-5 h-5" aria-hidden="true" />
+          </div>
+          <div>
+            <h3 className="text-base sm:text-lg font-bold text-vayu-text flex items-center gap-2">
+              {t('map.title')}
+            </h3>
+            <p className="text-xs text-vayu-text-secondary">
+              {t('map.subtitle')} • {data.city} ({data.latitude.toFixed(2)}°, {data.longitude.toFixed(2)}°)
+            </p>
+          </div>
+        </div>
+
+        <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-vayu-surface-tint border border-vayu-border text-vayu-text text-xs">
+          <Info className="w-3.5 h-3.5 text-vayu-primary" aria-hidden="true" />
+          <span>{t('map.clickHint')}</span>
+        </div>
+      </div>
+
+      {/* Map Viewport with Controls and Legend */}
       <div className="relative h-80 sm:h-96 md:h-[420px] w-full">
         <MapContainer
           center={centerPosition}
@@ -167,19 +190,19 @@ export const AirQualityMap: React.FC<AirQualityMapProps> = ({
               </div>
             </Popup>
           </Marker>
+
+          {/* Accessible Custom Map Controls */}
+          <MapControls
+            initialCenter={centerPosition}
+            initialZoom={11}
+            onSelectCoordinates={onSelectCoordinates}
+          />
         </MapContainer>
 
         {/* Legend Overlay */}
         <div className="absolute bottom-3 left-3 right-3 sm:right-auto z-20 pointer-events-auto">
           <MapLegend />
         </div>
-
-        {/* Current Location Geolocation Control */}
-        {onSelectCoordinates && (
-          <div className="absolute top-3 right-3 z-20 pointer-events-auto">
-            <CurrentLocationButton onSelectLocation={onSelectCoordinates} />
-          </div>
-        )}
       </div>
     </div>
   );
