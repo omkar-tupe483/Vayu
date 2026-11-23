@@ -1,7 +1,8 @@
-import React, { lazy, Suspense } from 'react';
+import React, { useState, useMemo, lazy, Suspense } from 'react';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useCity } from '../contexts/CityContext';
 import { useAirQuality } from '../hooks/useAirQuality';
+import { useAirQualityForecast } from '../hooks/useAirQualityForecast';
 import {
   CitySearch,
   CurrentAQIHeroCard,
@@ -9,6 +10,12 @@ import {
   PollutantGrid,
   DataFreshnessIndicator,
 } from '../components/aqi';
+import {
+  ForecastChart,
+  ForecastTimeline,
+  BestTimeWindowCard,
+} from '../components/forecast';
+import { HealthProfileId, findBestTimeWindow } from '../utils/bestWindow';
 import { Skeleton } from '../components/ui/Skeleton';
 import { ErrorState } from '../components/ui/ErrorState';
 import { Activity } from 'lucide-react';
@@ -20,7 +27,16 @@ export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
   const { currentCity } = useCity();
   const { data, isLoading, isError, error, refetch, isFetching } = useAirQuality(currentCity);
+  const { data: forecastData, isLoading: isForecastLoading } = useAirQualityForecast(currentCity);
   const { addToast } = useToast();
+
+  const [selectedProfile, setSelectedProfile] = useState<HealthProfileId>('general');
+  const [customThreshold, setCustomThreshold] = useState<number | undefined>(undefined);
+
+  const bestWindow = useMemo(() => {
+    if (!forecastData || !forecastData.hourly.length) return null;
+    return findBestTimeWindow(forecastData.hourly, selectedProfile, customThreshold, 3);
+  }, [forecastData, selectedProfile, customThreshold]);
 
   const handleSetAlert = () => {
     addToast({
@@ -102,6 +118,42 @@ export const DashboardPage: React.FC = () => {
           <Suspense fallback={<Skeleton className="h-[360px] sm:h-[440px] w-full rounded-3xl" />}>
             <AirQualityMap data={data} />
           </Suspense>
+
+          {/* 24-Hour Forecast Suite (SVG Chart, Timeline, Best Window) */}
+          {isForecastLoading ? (
+            <div className="space-y-4">
+              <Skeleton className="h-72 w-full rounded-3xl" />
+              <Skeleton className="h-32 w-full rounded-3xl" />
+              <Skeleton className="h-44 w-full rounded-3xl" />
+            </div>
+          ) : forecastData ? (
+            <div className="space-y-6">
+              {/* Hand-written SVG Forecast Chart */}
+              <ForecastChart forecast={forecastData} />
+
+              {/* Horizontally Scrollable 24-hour Timeline Strip */}
+              <ForecastTimeline
+                forecast={forecastData}
+                bestWindowRange={
+                  bestWindow && bestWindow.isSafe
+                    ? { startIndex: bestWindow.startIndex, endIndex: bestWindow.endIndex }
+                    : null
+                }
+              />
+
+              {/* Best Outdoor Time Window Card */}
+              <BestTimeWindowCard
+                bestWindow={bestWindow}
+                selectedProfile={selectedProfile}
+                onSelectProfile={(profile) => {
+                  setSelectedProfile(profile);
+                  setCustomThreshold(undefined);
+                }}
+                customThreshold={customThreshold}
+                onThresholdChange={(thresh) => setCustomThreshold(thresh)}
+              />
+            </div>
+          ) : null}
 
           {/* Categorical Scale Legend */}
           <AQIScaleLegend currentAqi={data.us_aqi} />
