@@ -17,3 +17,4 @@ export const POPULAR_CITIES: GeoCityItem[] = [
   { id: 2643743, name: 'London', country: 'United Kingdom', admin1: 'England', latitude: 51.50853, longitude: -0.12574 },
   { id: 5128581, name: 'New York', country: 'United States', admin1: 'New York', latitude: 40.71427, longitude: -74.00597 },
 ];
+

@@ -6,6 +6,7 @@ import { LanguageProvider } from './i18n';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ToastProvider } from './components/ui/Toast';
 import App from './App';
+import 'leaflet/dist/leaflet.css';
 import './index.css';
 
 const queryClient = new QueryClient({

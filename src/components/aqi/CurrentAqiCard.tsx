@@ -134,3 +134,4 @@ export const CurrentAqiCard: React.FC<CurrentAqiCardProps> = ({ data }) => {
     </div>
   );
 };
+

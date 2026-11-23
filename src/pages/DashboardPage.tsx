@@ -13,6 +13,7 @@ import { CitySearch } from '../components/aqi/CitySearch';
 import { DEFAULT_CITY } from '../constants/cities';
 import { CurrentAqiCard } from '../components/aqi/CurrentAqiCard';
 import { PollutantGrid } from '../components/aqi/PollutantGrid';
+import { AQIMap } from '../components/map/AQIMap';
 import { RefreshCw, Activity, Layers, WifiOff } from 'lucide-react';
 
 export const DashboardPage: React.FC = () => {
@@ -94,6 +95,7 @@ export const DashboardPage: React.FC = () => {
       {isLoading ? (
         <div className="space-y-6">
           <Skeleton className="h-72 w-full rounded-3xl" />
+          <Skeleton className="h-96 w-full rounded-3xl" />
           <div className="space-y-4">
             <Skeleton className="h-6 w-48" />
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -115,6 +117,9 @@ export const DashboardPage: React.FC = () => {
         <div className="space-y-8">
           {/* Primary Current AQI Card */}
           <CurrentAqiCard data={data} />
+
+          {/* Interactive AQI Map */}
+          <AQIMap data={data} />
 
           {/* Detailed Pollutants Grid (PM2.5, PM10, NO2, Ozone) */}
           <PollutantGrid data={data} />
