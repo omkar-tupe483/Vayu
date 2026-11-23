@@ -7,6 +7,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useTranslation } from '../../i18n';
 import { fixLeafletDefaultIcon, createAqiDivIcon } from './mapUtils';
 import { MapLegend } from './MapLegend';
+import { CurrentLocationButton } from './CurrentLocationButton';
 import { Clock } from 'lucide-react';
 
 // Fix default Leaflet marker icons
@@ -32,7 +33,11 @@ export const MapController: React.FC<{ center: [number, number]; zoom?: number }
   return null;
 };
 
-export const AirQualityMap: React.FC<AirQualityMapProps> = ({ data, className = '' }) => {
+export const AirQualityMap: React.FC<AirQualityMapProps> = ({
+  data,
+  className = '',
+  onSelectCoordinates,
+}) => {
   const { t } = useTranslation();
   const { isDark } = useTheme();
   const markerRef = useRef<L.Marker | null>(null);
@@ -168,6 +173,13 @@ export const AirQualityMap: React.FC<AirQualityMapProps> = ({ data, className = 
         <div className="absolute bottom-3 left-3 right-3 sm:right-auto z-20 pointer-events-auto">
           <MapLegend />
         </div>
+
+        {/* Current Location Geolocation Control */}
+        {onSelectCoordinates && (
+          <div className="absolute top-3 right-3 z-20 pointer-events-auto">
+            <CurrentLocationButton onSelectLocation={onSelectCoordinates} />
+          </div>
+        )}
       </div>
     </div>
   );

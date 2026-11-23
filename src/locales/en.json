@@ -95,8 +95,18 @@
     "title": "Interactive Air Quality Map",
     "subtitle": "Centered on selected coordinates with OpenStreetMap tiles",
     "recenter": "Center on City",
+    "resetView": "Reset View",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
     "clickHint": "Click marker to view AQI & main pollutants",
-    "legend": "AQI Scale Legend"
+    "legend": "AQI Scale Legend",
+    "currentLocation": "Use Current Location",
+    "locating": "Detecting location...",
+    "myLocation": "My Location",
+    "geoDenied": "Location permission was denied. Please enable location access or search your city manually.",
+    "geoUnavailable": "Location information is unavailable. Please search manually.",
+    "geoTimeout": "Location request timed out. Please try again.",
+    "geoUnsupported": "Geolocation is not supported by your browser."
   },
   "state": {
     "loading": "Fetching live air quality data from Open-Meteo...",

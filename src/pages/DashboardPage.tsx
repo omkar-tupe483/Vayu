@@ -121,7 +121,18 @@ export const DashboardPage: React.FC = () => {
 
           {/* Lazy-Loaded Interactive Air Quality Map */}
           <Suspense fallback={<Skeleton className="h-80 sm:h-96 md:h-[420px] w-full rounded-3xl" />}>
-            <AirQualityMap data={data} />
+            <AirQualityMap
+              data={data}
+              onSelectCoordinates={(lat, lon, name) => {
+                setSelectedCity({
+                  id: Date.now(),
+                  name,
+                  latitude: lat,
+                  longitude: lon,
+                  country: '',
+                });
+              }}
+            />
           </Suspense>
 
           {/* Detailed Pollutants Grid (PM2.5, PM10, NO2, Ozone) */}
