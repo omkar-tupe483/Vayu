@@ -10,6 +10,8 @@ import {
   PollutantGrid,
   DataFreshnessIndicator,
 } from '../components/aqi';
+import { SavedCityChips } from '../components/aqi/SavedCityChips';
+import { AlertConfigModal } from '../components/alert/AlertConfigModal';
 import {
   ForecastChart,
   ForecastTimeline,
@@ -33,6 +35,7 @@ export const DashboardPage: React.FC = () => {
 
   const [selectedProfile, setSelectedProfile] = useState<HealthProfileId>('general');
   const [customThreshold, setCustomThreshold] = useState<number | undefined>(undefined);
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
 
   const bestWindow = useMemo(() => {
     if (!forecastData || !forecastData.hourly.length) return null;
@@ -40,11 +43,7 @@ export const DashboardPage: React.FC = () => {
   }, [forecastData, selectedProfile, customThreshold]);
 
   const handleSetAlert = () => {
-    addToast({
-      title: 'Alert Configured',
-      message: `AQI monitoring enabled for ${currentCity.name}. You will be alerted when air quality drops.`,
-      type: 'info',
-    });
+    setIsAlertModalOpen(true);
   };
 
   const handleViewHealthAdvice = () => {
@@ -78,6 +77,9 @@ export const DashboardPage: React.FC = () => {
 
         {/* Global City Search Combobox */}
         <CitySearch />
+
+        {/* Quick Saved Locations Chips */}
+        <SavedCityChips />
       </div>
 
       {/* Main Status Display: Loading, Error, or Live Data */}
@@ -166,6 +168,12 @@ export const DashboardPage: React.FC = () => {
           <PollutantGrid data={data} />
         </div>
       ) : null}
+
+      {/* Threshold Alert Configuration Modal */}
+      <AlertConfigModal
+        isOpen={isAlertModalOpen}
+        onClose={() => setIsAlertModalOpen(false)}
+      />
     </div>
   );
 };
