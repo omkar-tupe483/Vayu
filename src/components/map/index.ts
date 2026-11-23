@@ -1,1 +1,1 @@
-export * from './AQIMap';
+export * from './AirQualityMap';

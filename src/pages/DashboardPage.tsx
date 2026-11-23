@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '../i18n';
 import { useTheme } from '../contexts/ThemeContext';
@@ -13,8 +13,9 @@ import { CitySearch } from '../components/aqi/CitySearch';
 import { DEFAULT_CITY } from '../constants/cities';
 import { CurrentAqiCard } from '../components/aqi/CurrentAqiCard';
 import { PollutantGrid } from '../components/aqi/PollutantGrid';
-import { AQIMap } from '../components/map/AQIMap';
 import { RefreshCw, Activity, Layers, WifiOff } from 'lucide-react';
+
+const AirQualityMap = lazy(() => import('../components/map/AirQualityMap'));
 
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
@@ -118,8 +119,10 @@ export const DashboardPage: React.FC = () => {
           {/* Primary Current AQI Card */}
           <CurrentAqiCard data={data} />
 
-          {/* Interactive AQI Map */}
-          <AQIMap data={data} />
+          {/* Lazy-Loaded Interactive Air Quality Map */}
+          <Suspense fallback={<Skeleton className="h-80 sm:h-96 md:h-[420px] w-full rounded-3xl" />}>
+            <AirQualityMap data={data} />
+          </Suspense>
 
           {/* Detailed Pollutants Grid (PM2.5, PM10, NO2, Ozone) */}
           <PollutantGrid data={data} />
