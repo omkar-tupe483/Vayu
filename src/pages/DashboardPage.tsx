@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '../i18n';
 import { useTheme } from '../contexts/ThemeContext';
@@ -14,17 +14,20 @@ import { DEFAULT_CITY } from '../constants/cities';
 import { CurrentAqiCard } from '../components/aqi/CurrentAqiCard';
 import { PollutantGrid } from '../components/aqi/PollutantGrid';
 import { useAirQualityForecast } from '../hooks/useAirQualityForecast';
+import { HealthProfileId, findBestTimeWindow } from '../utils/bestWindow';
+import { ForecastTimeline, BestTimeWindowCard } from '../components/forecast';
 import { RefreshCw, Activity, Layers, WifiOff } from 'lucide-react';
 
 const AirQualityMap = lazy(() => import('../components/map/AirQualityMap'));
 const ForecastChart = lazy(() => import('../components/forecast/ForecastChart'));
-import { ForecastTimeline } from '../components/forecast/ForecastTimeline';
 
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
   const { isDark } = useTheme();
   const [selectedCity, setSelectedCity] = useState<GeoCityItem>(DEFAULT_CITY);
   const [isOffline, setIsOffline] = useState<boolean>(() => (typeof navigator !== 'undefined' ? !navigator.onLine : false));
+  const [selectedProfile, setSelectedProfile] = useState<HealthProfileId>('general');
+  const [customThreshold, setCustomThreshold] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     const handleOnline = () => setIsOffline(false);
@@ -52,6 +55,11 @@ export const DashboardPage: React.FC = () => {
   });
 
   const { data: forecastData, isLoading: isForecastLoading } = useAirQualityForecast(selectedCity);
+
+  const bestWindow = useMemo(() => {
+    if (!forecastData || !forecastData.hourly.length) return null;
+    return findBestTimeWindow(forecastData.hourly, selectedProfile, customThreshold, 3);
+  }, [forecastData, selectedProfile, customThreshold]);
 
   return (
     <div className="space-y-8">
@@ -143,18 +151,41 @@ export const DashboardPage: React.FC = () => {
           {/* Detailed Pollutants Grid (PM2.5, PM10, NO2, Ozone) */}
           <PollutantGrid data={data} />
 
-          {/* 24-Hour Air Quality Forecast Chart & Timeline */}
+          {/* 24-Hour Air Quality Forecast & Outdoor Planning */}
           {isForecastLoading ? (
             <div className="space-y-4">
               <Skeleton className="h-72 w-full rounded-3xl" />
+              <Skeleton className="h-44 w-full rounded-3xl" />
               <Skeleton className="h-32 w-full rounded-3xl" />
             </div>
           ) : forecastData ? (
-            <div className="space-y-4">
+            <div className="space-y-5">
+              {/* Best Outdoor Time Window Card */}
+              <BestTimeWindowCard
+                bestWindow={bestWindow}
+                selectedProfile={selectedProfile}
+                onSelectProfile={(profile) => {
+                  setSelectedProfile(profile);
+                  setCustomThreshold(undefined); // Reset custom threshold on profile change
+                }}
+                customThreshold={customThreshold}
+                onThresholdChange={(thresh) => setCustomThreshold(thresh)}
+              />
+
+              {/* Interactive Forecast Chart */}
               <Suspense fallback={<Skeleton className="h-72 w-full rounded-3xl" />}>
                 <ForecastChart forecast={forecastData} />
               </Suspense>
-              <ForecastTimeline forecast={forecastData} />
+
+              {/* 24-Hour Hourly Timeline Strip */}
+              <ForecastTimeline
+                forecast={forecastData}
+                bestWindowRange={
+                  bestWindow && bestWindow.isSafe
+                    ? { startIndex: bestWindow.startIndex, endIndex: bestWindow.endIndex }
+                    : null
+                }
+              />
             </div>
           ) : null}
 
