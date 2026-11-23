@@ -1,0 +1,91 @@
+{
+  "brand": {
+    "name": "Vayu",
+    "tagline": "Know your air. Breathe smarter.",
+    "subtitle": "Urban Air Quality Assistant"
+  },
+  "nav": {
+    "skipToContent": "Skip to main content",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "routes": "Clean Routes",
+    "health": "Health Advisor",
+    "settings": "Settings",
+    "language": "Language",
+    "selectLanguage": "Select language"
+  },
+  "footer": {
+    "tagline": "Know your air. Breathe smarter.",
+    "attribution": "Atmospheric data by Open-Meteo • Map tiles by OpenStreetMap",
+    "modelledNote": "Honest Disclosure: Open-Meteo values are modelled atmospheric estimates, not ground-sensor readings.",
+    "healthNote": "Health content provides general wellness guidance only, never clinical medical diagnosis."
+  },
+  "landing": {
+    "heroTitle": "Know your air.",
+    "heroAccent": "Breathe smarter.",
+    "heroSubtitle": "Real-time atmospheric insights, 24-hour predictive forecasts, cleanest route navigation, and in-browser AI guidance for healthier urban living.",
+    "ctaExplore": "Explore Dashboard",
+    "ctaSettings": "Preferences",
+    "aqiTiersTitle": "US Air Quality Index Categories",
+    "aqiTiersSubtitle": "Standard health benchmark scale from Good to Hazardous"
+  },
+  "dashboard": {
+    "title": "Air Quality Dashboard",
+    "subtitle": "Live atmospheric conditions and urban air quality indices",
+    "currentAqi": "Current Air Quality",
+    "forecast": "24-Hour Forecast",
+    "pollutants": "Atmospheric Pollutants",
+    "map": "Interactive Air Quality Map"
+  },
+  "settings": {
+    "title": "Application Preferences",
+    "subtitle": "Personalize language, interface theme, and accessibility controls",
+    "appearance": "Appearance & Theme",
+    "appearanceDesc": "Toggle between light and dark modes",
+    "language": "Language & Localization",
+    "languageDesc": "Select your preferred regional language",
+    "accessibility": "Accessibility & Motion",
+    "reduceMotion": "Reduce motion effects",
+    "reduceMotionDesc": "Minimizes animations and interface transitions across all pages",
+    "dataPrivacy": "Data & Local Storage",
+    "clearData": "Clear All Saved Local Data",
+    "clearDataSuccess": "All local preferences have been cleared successfully."
+  },
+  "aqi": {
+    "title": "Air Quality Index",
+    "scale": "US AQI Standard",
+    "measuredAt": "Estimated for",
+    "refresh": "Refresh Data",
+    "refreshing": "Fetching...",
+    "categories": {
+      "good": "Good",
+      "moderate": "Moderate",
+      "unhealthy_sensitive": "Unhealthy for Sensitive Groups",
+      "unhealthy": "Unhealthy",
+      "very_unhealthy": "Very Unhealthy",
+      "hazardous": "Hazardous"
+    },
+    "summary": {
+      "good": "Air quality is satisfactory and poses little or no health risk.",
+      "moderate": "Air quality is acceptable. Very sensitive individuals should observe symptoms.",
+      "unhealthy_sensitive": "Sensitive groups (asthma, children, seniors) may experience irritation.",
+      "unhealthy": "Everyone may begin to experience health effects; sensitive groups more seriously.",
+      "very_unhealthy": "Health alert: serious risk of harm for entire population. Remain indoors.",
+      "hazardous": "Health emergency: life-threatening conditions for all residents."
+    },
+    "advice": {
+      "good": "Air quality is clean. Ideal time for outdoor exercise, runs, and window ventilation.",
+      "moderate": "Acceptable air quality. Unusually sensitive people should consider limiting heavy exertion.",
+      "unhealthy_sensitive": "Sensitive individuals should wear an N95 mask outdoors and limit prolonged workouts.",
+      "unhealthy": "Avoid strenuous outdoor exertion. Close windows facing traffic and run HEPA air purifiers.",
+      "very_unhealthy": "Stay strictly indoors. Seal room drafts and operate continuous HEPA filtration.",
+      "hazardous": "Emergency condition. Remain strictly inside. Avoid all outdoor physical activity."
+    }
+  },
+  "state": {
+    "loading": "Loading atmospheric data...",
+    "errorTitle": "Unable to Load Data",
+    "retry": "Try Again",
+    "empty": "No data available."
+  }
+}
