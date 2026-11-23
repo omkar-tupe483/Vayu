@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Vayu Design Tokens - Light Theme */
+  --vayu-bg: #F6F6FC;                 /* Very light tint of Soft Lavender */
+  --vayu-surface: #FFFFFF;            /* Pure white card surface */
+  --vayu-surface-tint: #F0F8FA;       /* Light tint of Powder Blue */
+  --vayu-surface-elevated: #FFFFFF;
+  --vayu-primary: #B0E0E6;            /* Powder Blue */
+  --vayu-secondary: #E6E6FA;          /* Soft Lavender */
+  --vayu-accent: #FFCBA4;             /* Warm Sunset Peach */
+  --vayu-accent-link: #B44A14;        /* Darkened Peach for WCAG AA text/links (4.8:1 on light) */
+  --vayu-text: #1E2A44;               /* Dark Navy */
+  --vayu-text-secondary: #4A5578;     /* Secondary Navy */
+  --vayu-border: #8EC8D1;             /* Darker tint of Powder Blue */
+  --vayu-border-subtle: #D8EEF2;      /* Soft border tint */
+  --vayu-focus-ring: #0F4C81;         /* High-contrast focus outline */
+  --vayu-btn-text: #1E2A44;           /* Navy text on peach button */
+}
+
+.dark {
+  /* Vayu Design Tokens - Dark Theme */
+  --vayu-bg: #0F172A;                 /* Dark page background */
+  --vayu-surface: #1B2540;            /* Surface */
+  --vayu-surface-tint: #222E4D;
+  --vayu-surface-elevated: #262F52;   /* Elevated surface */
+  --vayu-primary: #7FB8C9;            /* Primary */
+  --vayu-secondary: #9C95D0;          /* Secondary */
+  --vayu-accent: #F4A982;             /* Accent */
+  --vayu-accent-link: #F4A982;        /* High-contrast peach link */
+  --vayu-text: #EEF0FA;               /* Light text */
+  --vayu-text-secondary: #B7BCD6;     /* Secondary text */
+  --vayu-border: #2F3A63;             /* Dark border */
+  --vayu-border-subtle: #1E284A;
+  --vayu-focus-ring: #9C95D0;         /* Visible lavender focus ring */
+  --vayu-btn-text: #0F172A;           /* Deep dark text on bright peach */
+}
+
+@layer base {
+  * {
+    border-color: var(--vayu-border);
+  }
+
+  body {
+    background-color: var(--vayu-bg);
+    color: var(--vayu-text);
+    font-family: 'Inter', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Universal high-contrast visible focus rings */
+  :focus-visible {
+    outline: 2px solid var(--vayu-focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.reduced-motion *,
+.reduced-motion ::before,
+.reduced-motion ::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
