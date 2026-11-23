@@ -185,3 +185,4 @@ export const CurrentAQIHeroCard: React.FC<CurrentAQIHeroCardProps> = ({
     </div>
   );
 };
+

@@ -6,3 +6,4 @@ export interface ThemeContextType {
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
 }
+

@@ -12,3 +12,4 @@ export function useAirQuality(city: CityLocation) {
     refetchOnWindowFocus: false,
   });
 }
+

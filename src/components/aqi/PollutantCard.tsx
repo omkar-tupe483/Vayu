@@ -58,3 +58,4 @@ export const PollutantCard: React.FC<PollutantCardProps> = ({ pollutant }) => {
     </div>
   );
 };
+

@@ -35,3 +35,4 @@ export const DataFreshnessIndicator: React.FC<{ timestamp: string; isFetching?: 
     </div>
   );
 };
+

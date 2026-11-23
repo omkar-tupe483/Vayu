@@ -53,3 +53,4 @@ export async function searchCities(query: string, count = 10, signal?: AbortSign
     return [];
   }
 }
+

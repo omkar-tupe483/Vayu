@@ -163,3 +163,4 @@ export function getAqiCategory(value: number): AqiCategory {
   if (rounded <= 300) return AQI_CATEGORIES[4]!;
   return AQI_CATEGORIES[5]!;
 }
+

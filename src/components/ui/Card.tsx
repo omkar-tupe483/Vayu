@@ -42,3 +42,4 @@ export const CardContent: React.FC<HTMLAttributes<HTMLDivElement>> = ({ classNam
 export const CardFooter: React.FC<HTMLAttributes<HTMLDivElement>> = ({ className = '', ...props }) => (
   <div className={`pt-4 border-t border-vayu-border-subtle mt-4 flex items-center justify-between ${className}`} {...props} />
 );
+

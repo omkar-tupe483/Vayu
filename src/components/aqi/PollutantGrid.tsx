@@ -33,3 +33,4 @@ export const PollutantGrid: React.FC<{ data: CleanAirQualityModel; className?: s
     </div>
   );
 };
+

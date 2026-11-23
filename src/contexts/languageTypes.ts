@@ -18,3 +18,4 @@ export interface LanguageContextType {
   languages: LanguageOption[];
   t: (key: string, params?: Record<string, string | number>) => string;
 }
+

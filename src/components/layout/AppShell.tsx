@@ -27,3 +27,4 @@ export const AppShell: React.FC = () => {
     </div>
   );
 };
+

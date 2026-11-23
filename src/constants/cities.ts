@@ -66,3 +66,4 @@ export const POPULAR_CITIES: CityLocation[] = [
     admin1: 'New York',
   },
 ];
+

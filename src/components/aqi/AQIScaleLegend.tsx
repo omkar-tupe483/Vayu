@@ -82,3 +82,4 @@ export const AQIScaleLegend: React.FC<{ currentAqi?: number; className?: string 
     </div>
   );
 };
+
