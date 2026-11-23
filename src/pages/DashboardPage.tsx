@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useCity } from '../contexts/CityContext';
 import { useAirQuality } from '../hooks/useAirQuality';
@@ -13,6 +13,8 @@ import { Skeleton } from '../components/ui/Skeleton';
 import { ErrorState } from '../components/ui/ErrorState';
 import { Activity } from 'lucide-react';
 import { useToast } from '../components/ui/toastContext';
+
+const AirQualityMap = lazy(() => import('../components/map/AirQualityMap'));
 
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
@@ -95,6 +97,11 @@ export const DashboardPage: React.FC = () => {
             onViewHealthAdvice={handleViewHealthAdvice}
             onSetAlert={handleSetAlert}
           />
+
+          {/* Lazy-loaded Interactive Leaflet Air Quality Map */}
+          <Suspense fallback={<Skeleton className="h-[360px] sm:h-[440px] w-full rounded-3xl" />}>
+            <AirQualityMap data={data} />
+          </Suspense>
 
           {/* Categorical Scale Legend */}
           <AQIScaleLegend currentAqi={data.us_aqi} />
