@@ -32,3 +32,4 @@ export interface AIService {
     onProgress?: (partialText: string) => void
   ): Promise<string>;
 }
+

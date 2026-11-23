@@ -82,3 +82,4 @@ Welcome to **Vayu** ("Know your air. Breathe smarter."). This guide provides a r
 | **Localization** | Trilingual | English (`en`), Hindi (`hi`), Marathi (`mr`) |
 | **Security** | Strict CSP & No XSS | Verified zero `dangerouslySetInnerHTML`, strict CSP headers |
 | **Unit Testing** | Vitest coverage | **39 passing tests** covering math, logic, and schemas |
+

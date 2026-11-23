@@ -67,3 +67,4 @@ If you discover a security vulnerability in Vayu, please report it privately:
 1. Open a **Private Security Advisory** on the GitHub repository: `https://github.com/omkar-tupe483/Vayu/security/advisories/new`
 2. Provide a clear description, reproduction steps, and impact assessment.
 3. We will respond within 48 hours and coordinate a public fix.
+

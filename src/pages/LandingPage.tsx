@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/useTheme';
@@ -6,7 +6,10 @@ import { useAirQuality } from '../hooks/useAirQuality';
 import { DEFAULT_CITY } from '../constants/cities';
 import { AQI_CATEGORIES, getAqiCategory } from '../constants/aqi';
 import { Button } from '../components/ui/Button';
+import { Skeleton } from '../components/ui/Skeleton';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/Card';
+
+const AirQualityMap = lazy(() => import('../components/map/AirQualityMap'));
 import {
   Activity,
   Compass,
@@ -171,6 +174,38 @@ export const LandingPage: React.FC = () => {
             </NavLink>
           </div>
         </div>
+      </section>
+
+      {/* Live Interactive Air Quality Map Preview */}
+      <section className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-vayu-border-subtle">
+          <div className="flex items-center gap-2">
+            <div className="p-2 rounded-2xl bg-vayu-accent/20 text-vayu-accent-link">
+              <MapPin className="w-5 h-5 text-vayu-accent" aria-hidden="true" />
+            </div>
+            <div>
+              <h2 className="text-xl sm:text-2xl font-black text-vayu-text">
+                Live Interactive Air Quality Map
+              </h2>
+              <p className="text-xs sm:text-sm text-vayu-text-secondary">
+                Explore atmospheric indices and live pollutant concentrations across urban regions
+              </p>
+            </div>
+          </div>
+
+          <NavLink to="/app" className="inline-flex items-center gap-1.5 text-xs font-bold text-vayu-accent-link hover:underline">
+            <span>Open Full Dashboard</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </NavLink>
+        </div>
+
+        {puneData ? (
+          <Suspense fallback={<Skeleton className="h-[360px] sm:h-[440px] w-full rounded-3xl" />}>
+            <AirQualityMap data={puneData} />
+          </Suspense>
+        ) : (
+          <Skeleton className="h-[360px] sm:h-[440px] w-full rounded-3xl" />
+        )}
       </section>
 
       {/* How Vayu Works (Track, Plan, Protect) */}

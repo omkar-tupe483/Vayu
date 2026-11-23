@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { CleanAirQualityModel } from '../../schemas/airQualitySchema';
 import { createAqiDivIcon } from './mapUtils';
 import { MapControls } from './MapControls';
@@ -9,7 +11,6 @@ import { getAqiCategory } from '../../constants/aqi';
 import { useTheme } from '../../contexts/useTheme';
 import { useTranslation } from '../../contexts/LanguageContext';
 import { Clock, Sparkles } from 'lucide-react';
-import L from 'leaflet';
 
 interface MapUpdaterProps {
   center: [number, number];
@@ -54,17 +55,14 @@ export const AirQualityMap: React.FC<AirQualityMapProps> = ({ data, className = 
         zoom={zoom}
         zoomControl={false}
         scrollWheelZoom={false}
+        style={{ height: '100%', width: '100%', minHeight: '360px' }}
         className="w-full h-full z-0"
       >
         {/* OpenStreetMap Tiles (No API key needed) */}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>'
-          url={
-            isDark
-              ? 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-              : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-          }
-          maxZoom={18}
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          maxZoom={19}
         />
 
         <MapUpdater center={center} zoom={zoom} />

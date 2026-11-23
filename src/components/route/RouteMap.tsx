@@ -88,6 +88,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({
         center={[startCoord[0], startCoord[1]]}
         zoom={13}
         scrollWheelZoom={false}
+        style={{ height: '100%', width: '100%', minHeight: '380px' }}
         className="w-full h-full z-0"
       >
         <TileLayer
