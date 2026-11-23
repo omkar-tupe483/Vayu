@@ -257,6 +257,16 @@
       "title": "Urgent Medical Notice",
       "alert": "Urgent Medical Alert: Atmospheric pollution is dangerously high. If you or someone with you experiences severe shortness of breath, continuous coughing, wheezing, or chest tightness, seek immediate emergency medical care."
     }
+  },
+  "chat": {
+    "triggerButton": "Ask Vayu AI",
+    "open": "Open Vayu Assistant",
+    "close": "Close Vayu Assistant",
+    "assistantTitle": "Vayu Air Assistant",
+    "assistantSubtitle": "Instant atmospheric guidance & conversational advice",
+    "placeholder": "Ask about air quality, running, or masks...",
+    "send": "Send message",
+    "clear": "Clear conversation"
   }
 }
 
