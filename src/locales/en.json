@@ -87,6 +87,176 @@
     "errorTitle": "Unable to Load Data",
     "retry": "Try Again",
     "empty": "No data available."
+  },
+  "advisor": {
+    "title": "Personalized Health Advisor",
+    "subtitle": "Tailored physiological vulnerability guidance based on live atmospheric indices",
+    "selectProfile": "Select Sensitivity Profile",
+    "evaluation": "Personalized Evaluation",
+    "profileLabel": {
+      "general": "General Public",
+      "child": "Children",
+      "elderly": "Seniors (65+)",
+      "runner": "Athletes & Runners",
+      "asthma_sensitive": "Asthma & Sensitive"
+    },
+    "risk": {
+      "low": "Low Health Risk",
+      "moderate": "Moderate Health Risk",
+      "high": "High Health Risk",
+      "very_high": "Very High Health Risk"
+    },
+    "activity": {
+      "title": "Daily Activity & Airway Protection",
+      "exercise": "Outdoor Exercise",
+      "mask": "Mask & Respirator Advice",
+      "ventilation": "Windows & Ventilation",
+      "window": "Forecast Window",
+      "noWindow": "Check live atmospheric readings above to time errands."
+    },
+    "summary": {
+      "low": {
+        "general": "Clean air conditions. Minimal to no health risk detected for the general population.",
+        "child": "Ideal conditions for children to play, learn, and engage in outdoor sports.",
+        "elderly": "Safe and pristine atmospheric quality for seniors and elderly walks.",
+        "runner": "Optimal lung capacity conditions for high-intensity distance running and endurance training.",
+        "asthma_sensitive": "Clear atmospheric conditions with very low respiratory triggers."
+      },
+      "moderate": {
+        "general": "Air quality is acceptable. Very small risk for unusually sensitive individuals.",
+        "child": "Generally safe, but monitor children with asthma or persistent cough during prolonged outdoor play.",
+        "elderly": "Moderate air quality. Seniors with cardiovascular issues should pace outdoor strolls.",
+        "runner": "Acceptable for training, but consider morning or shaded routes away from dense traffic corridors.",
+        "asthma_sensitive": "Mild airborne irritants present. Keep quick-relief inhaler handy during outdoor commutes."
+      },
+      "high": {
+        "general": "Elevated particulate pollution. Sensitive groups experience irritation; everyone feels mild symptoms.",
+        "child": "Unhealthy air for young lungs. Recess and sports practices should be moved indoors.",
+        "elderly": "Increased cardiac and respiratory burden. Limit outdoor errands and stay in air-filtered spaces.",
+        "runner": "Strenuous aerobic exertion forces fine PM2.5 deep into alveoli. Shift workout indoors.",
+        "asthma_sensitive": "Significant bronchospasm trigger. Avoid outdoor exposure; keep rescue medications accessible."
+      },
+      "very_high": {
+        "general": "Severe pollution alert. Serious health risks for the entire populace. Avoid outdoor exposure.",
+        "child": "Hazardous conditions for children. Keep strictly indoors with windows sealed and air filtered.",
+        "elderly": "Life-threatening strain on cardiopulmonary systems. Remain strictly in filtered indoor environments.",
+        "runner": "Dangerous airborne toxicity. Absolutely no outdoor workouts, cycling, or running.",
+        "asthma_sensitive": "Critical respiratory emergency level. Stay inside sealed rooms; seek medical care if distress occurs."
+      }
+    },
+    "exercise": {
+      "low": {
+        "general": "Excellent conditions for all outdoor workouts, runs, and recreational sports.",
+        "runner": "Prime conditions for marathon training, sprints, and interval workouts.",
+        "sensitive": "Outdoor activities and gentle play are safe and highly encouraged."
+      },
+      "moderate": {
+        "general": "Outdoor exercise is fine for most. Take normal hydration breaks.",
+        "runner": "Safe for regular runs. If sensitive, schedule during cleanest forecast hours.",
+        "sensitive": "Reduce duration of strenuous outdoor games or sports if coughing develops."
+      },
+      "high": {
+        "general": "Avoid prolonged or heavy exertion outdoors. Consider gym workouts.",
+        "runner": "Skip outdoor running. Deep breathing multiplies particulate inhalation 5-10x. Train indoors.",
+        "sensitive": "Cease all outdoor physical activities. Remain in well-filtered indoor environments."
+      },
+      "very_high": {
+        "general": "Avoid all outdoor physical activity. Keep physical strain minimal even indoors.",
+        "runner": "No outdoor exercise permitted. High risk of acute pulmonary irritation.",
+        "sensitive": "Strict indoor confinement. Avoid any physical exertion that increases breathing rate."
+      }
+    },
+    "mask": {
+      "none": "No respirator or mask needed. Ambient air poses no particulate hazard.",
+      "optionalSensitive": "Standard masks are optional; sensitive individuals may prefer an N95 near congested roads.",
+      "recommendedN95": "Well-fitted N95 / FFP2 respirator recommended outdoors. Note: surgical and cloth masks do NOT filter fine PM2.5.",
+      "criticalN95": "Strict N95 / FFP2 / KN95 respirator required for any brief outdoor transit. Ensure airtight nasal seal. Note: masks cannot filter toxic gases (ozone, NO2)."
+    },
+    "ventilation": {
+      "openWide": "Open windows wide for fresh air exchange and natural cross-breeze ventilation.",
+      "moderate": "Natural ventilation is acceptable during daytime. Close windows if near heavy traffic intersections.",
+      "limited": "Keep windows closed during peak hours. Use recirculating air conditioning or filtered intake.",
+      "closed": "Keep all windows, doors, and drafts tightly sealed. Run continuous HEPA filtration units indoors."
+    },
+    "bestWindow": {
+      "safe": "Optimal outdoor window between {start} and {end} (projected AQI ~{avgAqi}). Plan errands then.",
+      "unsafe": "No safe continuous window found in the next 24 hours. Keep outdoor outings strictly brief."
+    },
+    "profile": {
+      "general": {
+        "low": "Enjoy regular daily routines and outdoor activities without restriction.",
+        "moderate": "Unusually sensitive people should take more breaks during intense outdoor labor.",
+        "high": "Cut down on high-energy outdoor activities. Take frequent rests indoors.",
+        "very_high": "Stay indoors as much as possible. Postpone non-essential travel and outdoor commitments."
+      },
+      "child": {
+        "low": "Children can play freely outdoors. Natural air quality supports healthy lung development.",
+        "moderate": "Watch for complaints of eye stinging, sneezing, or mild coughing during sports.",
+        "high": "Move school sports, recess, and playground visits indoors. Keep windows closed at school.",
+        "very_high": "Keep children inside air-conditioned or air-purified rooms. Seek prompt care for breathing difficulty."
+      },
+      "elderly": {
+        "low": "Great weather for outdoor strolls, gardening, and socialization.",
+        "moderate": "Take regular seated rests during outdoor walks. Stay hydrated.",
+        "high": "Avoid exertion outdoors. Individuals with heart disease or COPD should remain inside.",
+        "very_high": "Stay indoors with doors sealed. Monitor oxygen saturation and pulse if advised by your physician."
+      },
+      "runner": {
+        "low": "Optimal VO2 max conditions. Ideal for long-distance tempo runs and high-aerobic workouts.",
+        "moderate": "Good for training. Monitor midday ozone levels; choose early morning trails.",
+        "high": "Aerobic respiration dramatically increases toxic particulate intake. Switch to indoor treadmill or gym.",
+        "very_high": "Danger of acute bronchitis or lung inflammation. Completely cancel outdoor endurance workouts."
+      },
+      "asthma_sensitive": {
+        "low": "Clean air. Low trigger risk for bronchospasm. Safe for normal outdoor routines.",
+        "moderate": "Keep prescribed bronchodilator/inhaler with you at all times when outdoors.",
+        "high": "High trigger risk for asthma flare-ups. Stay in sealed room with HEPA air cleaner. Follow your action plan.",
+        "very_high": "Severe bronchospasm hazard. Avoid any outdoor exposure. Seek medical attention immediately for wheezing."
+      }
+    },
+    "measures": {
+      "header": "Actionable Protective Measures",
+      "clickDetails": "Click measure for details",
+      "priority": "Priority",
+      "purifier": {
+        "title": "HEPA Air Filtration",
+        "low": "Indoor air quality is generally good. Standard airflow or low purifier setting is sufficient.",
+        "high": "Run true-HEPA air cleaners continuously on high. Clean pre-filters and seal doors."
+      },
+      "activity": {
+        "title": "Exertion Management",
+        "low": "Normal exertion is safe for all age groups.",
+        "moderate": "Pace strenuous workouts and stay hydrated.",
+        "high": "Scale back strenuous cardio. Move physical training into filtered indoor spaces.",
+        "very_high": "Absolute cessation of strenuous physical activities outdoors."
+      },
+      "ventilation": {
+        "title": "Indoor Ventilation & Windows",
+        "low": "Allow fresh air to circulate freely through home and office windows.",
+        "high": "Seal windows, balconies, and exterior exhaust dampers against outdoor smog ingress."
+      },
+      "mask": {
+        "title": "Respirator Protocol",
+        "low": "No personal protective equipment required.",
+        "high": "Wear a certified N95/FFP2 respirator with tight perimeter seal. Cloth masks are ineffective for PM2.5."
+      },
+      "hydration": {
+        "title": "Airway Hydration",
+        "desc": "Drink water frequently. Hydrated mucous membranes help airway cilia expel trapped airborne particles."
+      },
+      "medical": {
+        "title": "Respiratory Action Plan",
+        "general": "Keep basic first-aid and saline nasal rinses available if experiencing throat or eye irritation.",
+        "asthma": "Keep rescue inhalers accessible. Have your personalized asthma action plan ready and follow medication regimens."
+      }
+    },
+    "disclaimer": {
+      "notice": "General guidance only: Health advice in Vayu is for wellness awareness and educational reference. It does not constitute medical diagnosis, clinical prescription, or formal healthcare recommendations. Always consult a qualified medical professional for health concerns."
+    },
+    "emergency": {
+      "title": "Urgent Medical Notice",
+      "alert": "Urgent Medical Alert: Atmospheric pollution is dangerously high. If you or someone with you experiences severe shortness of breath, continuous coughing, wheezing, or chest tightness, seek immediate emergency medical care."
+    }
   }
 }
 

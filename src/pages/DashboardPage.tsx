@@ -15,6 +15,7 @@ import {
   ForecastTimeline,
   BestTimeWindowCard,
 } from '../components/forecast';
+import { HealthAdvisorSection } from '../components/health';
 import { HealthProfileId, findBestTimeWindow } from '../utils/bestWindow';
 import { Skeleton } from '../components/ui/Skeleton';
 import { ErrorState } from '../components/ui/ErrorState';
@@ -47,7 +48,7 @@ export const DashboardPage: React.FC = () => {
   };
 
   const handleViewHealthAdvice = () => {
-    const healthSection = document.getElementById('health-section');
+    const healthSection = document.getElementById('health-advisor');
     if (healthSection) {
       healthSection.scrollIntoView({ behavior: 'smooth' });
     } else {
@@ -154,6 +155,9 @@ export const DashboardPage: React.FC = () => {
               />
             </div>
           ) : null}
+
+          {/* Rule-Based Personalized Health Advisor (Phase 5) */}
+          <HealthAdvisorSection data={data} forecast={forecastData} />
 
           {/* Categorical Scale Legend */}
           <AQIScaleLegend currentAqi={data.us_aqi} />
