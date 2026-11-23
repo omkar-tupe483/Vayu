@@ -30,7 +30,7 @@ ReactDOM.createRoot(rootElement).render(
       <ThemeProvider>
         <LanguageProvider>
           <ToastProvider>
-            <BrowserRouter>
+            <BrowserRouter basename={import.meta.env.BASE_URL}>
               <App />
             </BrowserRouter>
           </ToastProvider>

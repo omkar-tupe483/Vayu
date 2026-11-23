@@ -35,3 +35,4 @@ export function createAqiDivIcon(aqi: number, colorHex: string, dotColor: string
     popupAnchor: [0, -50],
   });
 }
+
