@@ -1,0 +1,25 @@
+{
+  "appName": "Vayu",
+  "tagline": "Urban Smog & Clean Air Assistant",
+  "nav": {
+    "dashboard": "Live Air",
+    "shield": "Health Shield",
+    "dailyPlan": "Daily Plan",
+    "indoorLab": "Indoor Lab",
+    "swaps": "Swaps",
+    "simulator": "What If?",
+    "askVayu": "Ask Vayu",
+    "trust": "How We Estimate"
+  },
+  "kidMode": {
+    "toggle": "Kid Mode",
+    "title": "Hi, I'm Vayu Buddy!",
+    "heroChallenge": "Air Hero Star Quest",
+    "stars": "Stars Collected"
+  },
+  "speech": {
+    "readAloud": "Read Aloud",
+    "stop": "Stop Speaking",
+    "voiceInput": "Voice Input"
+  }
+}
