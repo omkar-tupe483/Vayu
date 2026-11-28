@@ -7,6 +7,7 @@ import {
   getHealthShieldGuidance,
 } from '../ruleEngine';
 import { findBestWindow, getCategoryFromAQI } from '../airQualityService';
+import { generateChatReply } from '../chatEngine';
 import { AirQualityData, HouseholdMember, LifestyleProfile } from '../../types';
 
 describe('Vayu Deterministic Rule Engine & Formulas', () => {
@@ -147,6 +148,39 @@ describe('Vayu Deterministic Rule Engine & Formulas', () => {
       expect(best?.startTime).toBe('12:00');
       expect(best?.endTime).toBe('14:00');
       expect(best?.estimatedAqi).toBe(113);
+    });
+  });
+
+  describe('Conversational Chat Engine', () => {
+    it('gives practical tips for "how can i improve my breathing?" without false emergency alarm', () => {
+      const reply = generateChatReply({
+        message: 'how can i improve my breathing?',
+        city: 'Delhi',
+        aqi: 235,
+      });
+      expect(reply).not.toContain('Emergency Notice');
+      expect(reply).toContain('Breathe through your nose');
+      expect(reply).toContain('Why this matters');
+    });
+
+    it('acknowledges "i dont have any problems" warmly without repeating canned AQI dump', () => {
+      const reply = generateChatReply({
+        message: 'i dont have any problems',
+        city: 'Delhi',
+        aqi: 235,
+      });
+      expect(reply).toContain('Glad to hear');
+      expect(reply).not.toMatch(/^Current AQI in Delhi is 235/);
+    });
+
+    it('triggers emergency notice only on genuine distress phrases', () => {
+      const reply = generateChatReply({
+        message: 'I have chest pain and cannot breathe',
+        city: 'Delhi',
+        aqi: 235,
+      });
+      expect(reply).toContain('Emergency Notice');
+      expect(reply).toContain('108');
     });
   });
 });

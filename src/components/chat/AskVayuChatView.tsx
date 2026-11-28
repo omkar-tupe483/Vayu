@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'preact/hooks';
 import type { JSX } from 'preact';
 import { ChatMessage, HouseholdMember } from '../../types';
 import { WindIcon } from '../common/Icons';
+import { generateChatReply } from '../../services/chatEngine';
 
 interface AskVayuChatViewProps {
   city: string;
@@ -55,6 +56,7 @@ export function AskVayuChatView({ city, aqi, household, language = 'en' }: AskVa
     setIsLoading(true);
 
     try {
+      const recentHistory = messages.slice(-6).map((m) => ({ role: m.role, content: m.content }));
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -64,6 +66,7 @@ export function AskVayuChatView({ city, aqi, household, language = 'en' }: AskVa
           aqi,
           language,
           householdSummary,
+          history: recentHistory,
         }),
       });
 
@@ -80,33 +83,20 @@ export function AskVayuChatView({ city, aqi, household, language = 'en' }: AskVa
       const assistantMsg: ChatMessage = {
         id: `msg-${Date.now()}-a`,
         role: 'assistant',
-        content: data.reply || 'Air quality guidance is available based on current conditions.',
+        content: data.reply || generateChatReply({ message: text, city, aqi, language, householdSummary }),
         timestamp: Date.now(),
         groundedAqi: data.groundedAqi || aqi,
       };
 
       setMessages((prev) => [...prev, assistantMsg]);
     } catch {
-      // Local fallback in case network or backend proxy is unreachable
-      let fallback = `Current AQI in ${city} is ${aqi}. `;
-      const lower = text.toLowerCase();
-      if (lower.includes('chest pain') || lower.includes('cannot breathe') || lower.includes('breath')) {
-        fallback += '⚠️ Emergency Notice: If you are experiencing acute chest pain or breathing distress, call 108 / 112 / 911 immediately. Vayu cannot provide clinical emergency diagnosis.';
-      } else if (lower.includes('window') || lower.includes('ventilate')) {
-        fallback += aqi <= 70
-          ? 'It is safe to open windows for cross-ventilation.'
-          : 'Keep windows closed facing traffic streets; ventilate only during midday thermal dispersion.';
-      } else if (lower.includes('mask')) {
-        fallback += aqi > 100
-          ? 'A well-fitted certified N95 or FFP2 respirator is recommended outdoors. Cloth and surgical masks do not filter fine PM2.5.'
-          : 'Mask is optional for healthy individuals in current conditions.';
-      } else if (lower.includes('child') || lower.includes('kid')) {
-        fallback += aqi > 150
-          ? 'Children should limit strenuous outdoor sports and play indoors today.'
-          : 'Safe for normal outdoor recess and play.';
-      } else {
-        fallback += 'Focus on indoor clean air sanctuaries, timing necessary outdoor errands during the midday window, and wearing a certified N95 when traveling in traffic.';
-      }
+      const fallback = generateChatReply({
+        message: text,
+        city,
+        aqi,
+        language,
+        householdSummary,
+      });
 
       const assistantMsg: ChatMessage = {
         id: `msg-${Date.now()}-a`,

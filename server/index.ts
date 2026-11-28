@@ -1,5 +1,6 @@
 import http from 'node:http';
 import https from 'node:https';
+import { generateChatReply } from '../src/services/chatEngine.ts';
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
@@ -165,29 +166,24 @@ const server = http.createServer((req, res) => {
         const systemPrompt = `You are Vayu, a calm, warm, non-alarmist urban air quality assistant for ${city}.
 Current US AQI in ${city} is ${aqi}. Household context: ${household}.
 Guidelines:
-1. Provide practical, health-first environmental advice in plain ${lang} (grade-8 reading level).
+1. Answer the user's specific question directly in plain ${lang} (grade-8 reading level). Do NOT repeat "Current AQI is..." in every reply unless directly relevant.
 2. Never provide clinical medical diagnosis or prescribe medications.
-3. If the user mentions acute chest pain, choking, or severe shortness of breath, immediately advise calling local emergency services (108 / 112 / 911).
-4. For every recommendation, explain "Why this matters" and state estimated impact with confidence (Low/Medium/High).
-5. Never invent numbers. Emphasize that estimates are environmental indicators, not medical facts.
-6. Keep response concise (under 120 words).`;
+3. Only give emergency 108/112/911 warnings if the user actually describes acute distress (e.g., chest pain, inability to breathe, choking)—NOT for general questions like "how can I improve my breathing?".
+4. When giving exposure advice, briefly include "Why this matters" and confidence (Low/Medium/High).
+5. Keep response concise and conversational (under 120 words).`;
 
         const userPrompt = `User question: "${message}"`;
         const aiResponse = await callGeminiDirect(systemPrompt, userPrompt);
 
-        // Fallback response if Gemini is unavailable
-        let finalReply = aiResponse;
-        if (!finalReply) {
-          if (aqi <= 50) {
-            finalReply = `Current air quality in ${city} is Good (AQI ${aqi}). It is safe for outdoor activities and home ventilation. No special mask is required.`;
-          } else if (aqi <= 100) {
-            finalReply = `Air quality in ${city} is Moderate (AQI ${aqi}). Sensitive individuals and asthmatics should take breaks during outdoor exercise and keep a rescue inhaler nearby.`;
-          } else if (aqi <= 200) {
-            finalReply = `Air quality is elevated in ${city} (AQI ${aqi}). We recommend wearing a certified N95 respirator during outdoor travel and keeping windows sealed during rush hours.`;
-          } else {
-            finalReply = `Air alert: Current AQI in ${city} is ${aqi} (Hazardous/Severe). Stay indoors in filtered rooms, avoid all strenuous exertion, and use an N95 respirator if stepping outside.`;
-          }
-        }
+        const finalReply =
+          aiResponse ||
+          generateChatReply({
+            message,
+            city,
+            aqi,
+            language: json.language || 'en',
+            householdSummary: household,
+          });
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ reply: finalReply, groundedAqi: aqi }));
