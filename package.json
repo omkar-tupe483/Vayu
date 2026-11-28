@@ -1,0 +1,25 @@
+{
+  "name": "vayu",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Production-grade GenAI-powered assistant helping families navigate severe winter smog and urban air pollution.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/check-size.mjs",
+    "preview": "vite preview",
+    "server": "node --experimental-strip-types server/index.ts",
+    "start": "node --experimental-strip-types server/index.ts",
+    "test": "vitest run",
+    "size:check": "node scripts/check-size.mjs"
+  },
+  "dependencies": {
+    "preact": "^10.25.4"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.9.5",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "vitest": "^2.1.8"
+  }
+}
