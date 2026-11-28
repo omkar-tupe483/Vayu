@@ -184,7 +184,16 @@ export function AskVayuChatView({ city, aqi, household, language = 'en' }: AskVa
       </div>
 
       {/* Suggested Prompt Chips */}
-      <div style={{ padding: '0.5rem 0.75rem', borderTop: '1px solid var(--border-subtle)', display: 'flex', gap: '0.5rem', overflowX: 'auto', backgroundColor: 'var(--bg-surface)' }}>
+      <div
+        style={{
+          padding: '0.65rem 0.75rem',
+          borderTop: '1px solid var(--border-subtle)',
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '0.5rem',
+          backgroundColor: 'var(--bg-surface)',
+        }}
+      >
         {DEFAULT_PROMPT_CHIPS.map((chip) => (
           <button
             key={chip}
@@ -192,7 +201,18 @@ export function AskVayuChatView({ city, aqi, household, language = 'en' }: AskVa
             onClick={() => handleSend(chip)}
             disabled={isLoading}
             class="badge badge-lavender"
-            style={{ cursor: 'pointer', whiteSpace: 'nowrap', fontSize: '0.75rem', padding: '0.3rem 0.65rem' }}
+            style={{
+              cursor: 'pointer',
+              flexShrink: 0,
+              maxWidth: '100%',
+              whiteSpace: 'normal',
+              textAlign: 'left',
+              textTransform: 'none',
+              letterSpacing: 'normal',
+              fontSize: '0.8rem',
+              fontWeight: '600',
+              padding: '0.4rem 0.85rem',
+            }}
           >
             {chip}
           </button>
